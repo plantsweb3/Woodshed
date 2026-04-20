@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { ReportButton } from "@/components/report-button";
 import { KudosButton } from "@/components/kudos-button";
-import { Sparkles, Lightbulb, Music, GraduationCap, Medal, BookOpen, ArrowLeft, Flame } from "lucide-react";
+import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { countFor, hasGiven, summarize as summarizeKudos } from "@/lib/kudos";
 import { listForUser as listMilestones } from "@/lib/milestones";
 import { formatDate } from "@/lib/utils";
@@ -55,170 +55,226 @@ export default async function MemberProfilePage({ params }: PageProps) {
   );
 
   return (
-    <div className="flex flex-col gap-8">
-      <Link href="/directory" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-        <ArrowLeft className="h-4 w-4" /> Back to directory
+    <article className="flex flex-col gap-10">
+      <Link
+        href="/directory"
+        className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground font-mono uppercase tracking-[0.22em] w-fit"
+      >
+        <ArrowLeft className="h-3.5 w-3.5" /> Back to the directory
       </Link>
 
-      <Card className="p-6 md:p-8">
-        <div className="flex flex-col md:flex-row md:items-center gap-5">
-          <Avatar name={fullName} src={user.avatarUrl} className="h-20 w-20 text-lg" />
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="font-display text-3xl sm:text-4xl tracking-tight">{fullName}</h1>
-              {profile?.featured && (
-                <Badge variant="accent" className="gap-1">
-                  <Sparkles className="h-3 w-3" /> Featured
-                </Badge>
-              )}
-              {user.role === "drum_major" && <Badge variant="primary">Drum Major</Badge>}
-              {user.role === "section_leader" && <Badge variant="primary">Section Leader</Badge>}
-              {user.role === "director" && <Badge variant="primary">Director</Badge>}
-              {user.status === "alumni" && user.graduationYear && (
-                <Badge variant="default">Alumni — Class of {user.graduationYear}</Badge>
-              )}
-            </div>
-            <p className="mt-1 text-muted-foreground">
-              Grade {user.grade} · {user.section}
+      {/* Masthead */}
+      <header className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 md:gap-12 items-start pb-8 border-b-2 border-ink">
+        <div className="flex flex-col items-start gap-3">
+          <Avatar
+            name={fullName}
+            src={user.avatarUrl}
+            className="h-48 w-48 rounded-none border-2 border-ink shadow-[6px_6px_0_0_var(--color-rule)]"
+          />
+          {!isSelf && viewer && (
+            <KudosButton
+              targetType="profile"
+              targetId={user.id}
+              initialCount={profileKudosCount}
+              initialGiven={profileKudosGiven}
+            />
+          )}
+          {isSelf && profileKudosCount > 0 && (
+            <p className="text-xs text-muted-foreground italic">
+              {profileKudosCount} high-five{profileKudosCount === 1 ? "" : "s"} on your profile.
             </p>
-            <p className="mt-0.5 text-foreground/90">
-              {user.primaryInstrument}
-              {user.marchingInstrument ? ` / ${user.marchingInstrument} (marching)` : ""}
-            </p>
-          </div>
-          <div className="flex flex-col items-end gap-2">
-            {profile?.mentorAvailable && user.status === "approved" && (
-              <Link href={`/mentorship/new?to=${user.id}`}>
-                <Button size="lg" className="gap-2">
-                  <Lightbulb className="h-4 w-4" /> Request mentorship
-                </Button>
-              </Link>
-            )}
-            {!isSelf && viewer && (
-              <KudosButton
-                targetType="profile"
-                targetId={user.id}
-                initialCount={profileKudosCount}
-                initialGiven={profileKudosGiven}
-              />
-            )}
-            {isSelf && profileKudosCount > 0 && (
-              <p className="text-xs text-muted-foreground">
-                {profileKudosCount} {profileKudosCount === 1 ? "person has" : "people have"} high-fived your profile.
-              </p>
-            )}
-          </div>
+          )}
         </div>
 
-        {user.workingOn && (
-          <div className="mt-5 flex items-start gap-2.5 p-3 rounded-md bg-primary-soft/50 border border-primary/10">
-            <Music className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-            <div>
-              <p className="text-[11px] uppercase tracking-wide text-primary font-medium">In the shed right now</p>
-              <p className="text-sm mt-0.5">{user.workingOn}</p>
-            </div>
+        <div>
+          <div className="flex items-center gap-3 flex-wrap mb-3">
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
+              Profile № {user.id.slice(0, 4).toUpperCase()} · Vol. 01
+            </p>
+            {profile?.featured && (
+              <span className="stamp text-accent-ink">
+                ✦ Featured
+              </span>
+            )}
+            {user.role === "drum_major" && <Badge variant="stamp">Drum Major</Badge>}
+            {user.role === "section_leader" && <Badge variant="stamp">Section Leader</Badge>}
+            {user.role === "director" && <Badge variant="stamp">Director</Badge>}
+            {user.status === "alumni" && user.graduationYear && (
+              <Badge variant="outline">Alumni · {user.graduationYear}</Badge>
+            )}
           </div>
-        )}
 
-        {bioHidden ? (
-          <p className="mt-6 text-sm text-muted-foreground italic">Bio hidden by moderation.</p>
-        ) : profile?.bio ? (
-          <p className="mt-6 text-foreground/90 leading-relaxed whitespace-pre-line max-w-3xl">{profile.bio}</p>
-        ) : (
-          <p className="mt-6 text-sm text-muted-foreground italic">
-            No bio yet. That&apos;s ok — the work speaks.
+          <h1 className="font-display text-6xl md:text-8xl leading-[0.88] tracking-tight">
+            {user.firstName}
+            <br />
+            <span className="font-display-italic text-primary">{user.lastName}.</span>
+          </h1>
+
+          <div className="mt-5 flex flex-wrap items-baseline gap-x-4 gap-y-1 font-mono text-xs uppercase tracking-[0.22em]">
+            <span>Grade {user.grade}</span>
+            <span className="text-muted-foreground">—</span>
+            <span>{user.section}</span>
+            <span className="text-muted-foreground">—</span>
+            <span className="text-primary">{user.primaryInstrument}</span>
+            {user.marchingInstrument && (
+              <>
+                <span className="text-muted-foreground">/</span>
+                <span>{user.marchingInstrument} (marching)</span>
+              </>
+            )}
+          </div>
+
+          {user.workingOn && (
+            <div className="mt-7 relative pl-6 max-w-2xl">
+              <span className="absolute left-0 top-1 text-accent-ink text-2xl leading-none">✦</span>
+              <p className="label-eyebrow text-primary">In the shed right now</p>
+              <p className="font-editorial-italic text-2xl md:text-3xl leading-snug mt-1">
+                {user.workingOn}
+              </p>
+            </div>
+          )}
+
+          {profile?.mentorAvailable && user.status === "approved" && (
+            <div className="mt-8 flex items-center gap-3">
+              <Link href={`/mentorship/new?to=${user.id}`}>
+                <Button className="gap-2">
+                  Ask {user.firstName} for help <ArrowUpRight className="h-4 w-4" />
+                </Button>
+              </Link>
+              <span className="text-xs text-muted-foreground font-mono uppercase tracking-[0.18em]">
+                {mentorSkills.length} skill{mentorSkills.length === 1 ? "" : "s"} open
+              </span>
+            </div>
+          )}
+        </div>
+      </header>
+
+      {/* Bio — drop cap, pull quote */}
+      {!bioHidden && profile?.bio && (
+        <section className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 md:gap-12 items-start">
+          <aside>
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">I. In their words</p>
+            <hr className="rule-letterpress mt-2 mb-3 w-12" />
+          </aside>
+          <div>
+            <p className="max-w-2xl text-lg md:text-xl leading-[1.55] drop-cap whitespace-pre-line">
+              {profile.bio}
+            </p>
+          </div>
+        </section>
+      )}
+      {bioHidden && (
+        <section className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 md:gap-12 items-start">
+          <aside>
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">I. In their words</p>
+          </aside>
+          <div><p className="italic text-muted-foreground">Bio hidden by moderation.</p></div>
+        </section>
+      )}
+
+      {/* Outside work + achievements + lessons + mentor skills */}
+      <section className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 md:gap-12 items-start border-t border-[color:var(--color-rule)]/30 pt-10">
+        <aside>
+          <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">II. The record</p>
+          <hr className="rule-letterpress mt-2 mb-3 w-12" />
+          <p className="text-xs italic text-muted-foreground max-w-xs">
+            Ensembles, honors, and the people teaching them. A permanent byline.
           </p>
-        )}
-        {!isSelf && !bioHidden && (
-          <div className="mt-4">
-            <ReportButton targetType="profile" targetId={user.id} />
-          </div>
-        )}
-      </Card>
+        </aside>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Section icon={<Music className="h-4 w-4" />} title="Outside ensembles">
-          {ensembles.length === 0 ? (
-            <Empty text="None listed. (SAYWE, DCI, community symphony, honor band — fair game.)" />
-          ) : (
-            <ul className="flex flex-col gap-3">
-              {ensembles.map((e, i) => (
-                <li key={i} className="flex flex-col">
-                  <span className="font-medium">{e.name}</span>
-                  {e.startYear && <span className="text-xs text-muted-foreground">Since {e.startYear}</span>}
-                  {e.notes && <span className="text-sm text-muted-foreground">{e.notes}</span>}
-                </li>
-              ))}
-            </ul>
-          )}
-        </Section>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <Section label="Outside ensembles">
+            {ensembles.length === 0 ? (
+              <Empty text="None listed. (SAYWE, DCI, community symphony, honor band — fair game.)" />
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {ensembles.map((e, i) => (
+                  <li key={i} className="flex flex-col border-b border-dashed border-[color:var(--color-rule)]/30 pb-2 last:border-b-0">
+                    <span className="font-editorial text-base">{e.name}</span>
+                    {e.startYear && <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Since {e.startYear}</span>}
+                    {e.notes && <span className="text-sm text-muted-foreground italic">{e.notes}</span>}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Section>
 
-        <Section icon={<Medal className="h-4 w-4" />} title="Achievements">
-          {achievements.length === 0 ? (
-            <Empty text="Add what you're working on — future freshmen need to see it's possible." />
-          ) : (
-            <ul className="flex flex-col gap-3">
-              {achievements.map((a, i) => (
-                <li key={i} className="flex flex-col">
-                  <span className="font-medium">{a.title}</span>
-                  <span className="text-xs text-muted-foreground">
-                    {a.year ? a.year : ""}
-                    {a.year && a.detail ? " · " : ""}
-                    {a.detail ?? ""}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </Section>
+          <Section label="Honors & achievements">
+            {achievements.length === 0 ? (
+              <Empty text="Add what you're working on — future freshmen need to see it's possible." />
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {achievements.map((a, i) => (
+                  <li key={i} className="flex items-start gap-3 border-b border-dashed border-[color:var(--color-rule)]/30 pb-2 last:border-b-0">
+                    <span className="text-accent-ink shrink-0 mt-0.5">✦</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-editorial text-base">{a.title}</p>
+                      <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                        {a.year ?? ""}
+                        {a.year && a.detail ? " · " : ""}
+                        {a.detail ?? ""}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Section>
 
-        <Section icon={<GraduationCap className="h-4 w-4" />} title="Private lessons">
-          {lessons.length === 0 ? (
-            <Empty text="None listed." />
-          ) : (
-            <ul className="flex flex-col gap-3">
-              {lessons.map((l, i) => (
-                <li key={i} className="flex flex-col">
-                  <span className="font-medium">{l.teacher}</span>
-                  {l.focus && <span className="text-sm text-muted-foreground">{l.focus}</span>}
-                </li>
-              ))}
-            </ul>
-          )}
-        </Section>
+          <Section label="Private lessons">
+            {lessons.length === 0 ? (
+              <Empty text="None listed." />
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {lessons.map((l, i) => (
+                  <li key={i} className="flex flex-col border-b border-dashed border-[color:var(--color-rule)]/30 pb-2 last:border-b-0">
+                    <span className="font-editorial text-base">{l.teacher}</span>
+                    {l.focus && <span className="text-sm text-muted-foreground italic">{l.focus}</span>}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Section>
 
-        <Section icon={<BookOpen className="h-4 w-4" />} title="Mentors in">
-          {profile?.mentorAvailable && mentorSkills.length ? (
-            <div className="flex flex-wrap gap-1.5">
-              {mentorSkills.map((s) => (
-                <Badge key={s} variant="primary">
-                  {s}
-                </Badge>
-              ))}
-            </div>
-          ) : profile?.mentorAvailable ? (
-            <Empty text="Mentor-available, no skills listed yet." />
-          ) : (
-            <Empty text="Not currently accepting mentees." />
-          )}
-        </Section>
-      </div>
+          <Section label="Mentors in">
+            {profile?.mentorAvailable && mentorSkills.length ? (
+              <div className="flex flex-wrap gap-1.5">
+                {mentorSkills.map((s) => (
+                  <Badge key={s} variant="primary">
+                    {s}
+                  </Badge>
+                ))}
+              </div>
+            ) : profile?.mentorAvailable ? (
+              <Empty text="Mentor-available, no skills listed yet." />
+            ) : (
+              <Empty text="Not currently accepting mentees." />
+            )}
+          </Section>
+        </div>
+      </section>
 
+      {/* Milestones */}
       {theirMilestones.length > 0 && (
-        <Card className="p-6">
-          <div className="flex items-center gap-2 mb-4 text-muted-foreground">
-            <Flame className="h-4 w-4" />
-            <h2 className="text-xs uppercase tracking-wide font-medium">Milestones on Woodshed</h2>
-          </div>
-          <ul className="relative border-l border-border pl-4 flex flex-col gap-4 max-w-2xl">
+        <section className="grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8 md:gap-12 items-start border-t border-[color:var(--color-rule)]/30 pt-10">
+          <aside>
+            <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">III. Timeline</p>
+            <hr className="rule-letterpress mt-2 mb-3 w-12" />
+            <p className="text-xs italic text-muted-foreground max-w-xs">
+              Milestones on Woodshed. High-five the ones that land.
+            </p>
+          </aside>
+          <ul className="relative border-l-2 border-ink pl-5 flex flex-col gap-5 max-w-2xl">
             {theirMilestones.map((m) => {
               const k = milestoneKudos.get(m.id) ?? { count: 0, mine: false };
               return (
                 <li key={m.id} className="relative">
-                  <span className="absolute -left-[17px] top-1.5 h-2 w-2 rounded-full bg-primary" />
-                  <p className="text-sm font-medium leading-tight">{m.title}</p>
-                  <p className="text-xs text-muted-foreground">{formatDate(m.earnedAt as unknown as Date)}</p>
-                  <div className="mt-1.5">
+                  <span className="absolute -left-[26px] top-1.5 h-3 w-3 bg-accent border border-ink rotate-45" />
+                  <p className="font-editorial text-lg leading-tight">{m.title}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground mt-0.5">
+                    {formatDate(m.earnedAt as unknown as Date)}
+                  </p>
+                  <div className="mt-2">
                     {!isSelf && viewer ? (
                       <KudosButton
                         targetType="milestone"
@@ -229,8 +285,8 @@ export default async function MemberProfilePage({ params }: PageProps) {
                       />
                     ) : (
                       k.count > 0 && (
-                        <p className="text-xs text-muted-foreground inline-flex items-center gap-1">
-                          <span>· {k.count} {k.count === 1 ? "high-five" : "high-fives"}</span>
+                        <p className="text-xs text-muted-foreground italic">
+                          · {k.count} high-five{k.count === 1 ? "" : "s"}
                         </p>
                       )
                     )}
@@ -239,21 +295,30 @@ export default async function MemberProfilePage({ params }: PageProps) {
               );
             })}
           </ul>
-        </Card>
+        </section>
       )}
-    </div>
+
+      {!isSelf && !bioHidden && (
+        <section className="pt-6 border-t border-[color:var(--color-rule)]/30 flex items-center justify-between">
+          <p className="text-xs text-muted-foreground italic max-w-sm">
+            Something off? Flag it and a drum major will take a look. The person reported won&apos;t be notified.
+          </p>
+          <ReportButton targetType="profile" targetId={user.id} />
+        </section>
+      )}
+    </article>
   );
 }
 
-function Section({ icon, title, children }: { icon: React.ReactNode; title: string; children: React.ReactNode }) {
+function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <Card className="p-6">
-      <div className="flex items-center gap-2 mb-4 text-muted-foreground">
-        {icon}
-        <h2 className="text-xs uppercase tracking-wide font-medium">{title}</h2>
+    <div>
+      <div className="label-eyebrow text-muted-foreground mb-3 flex items-center gap-2">
+        <span>{label}</span>
+        <span className="flex-1 h-px bg-[color:var(--color-rule)]/20" />
       </div>
       {children}
-    </Card>
+    </div>
   );
 }
 

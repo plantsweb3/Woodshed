@@ -1,19 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Cormorant_Garamond } from "next/font/google";
+import { Fraunces, Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { APP } from "@/lib/constants";
 
-const inter = Inter({
-  variable: "--font-inter",
+const serif = Fraunces({
+  variable: "--font-serif",
   subsets: ["latin"],
+  axes: ["SOFT", "WONK", "opsz"],
   display: "swap",
+  style: ["normal", "italic"],
 });
 
-const cormorant = Cormorant_Garamond({
-  variable: "--font-cormorant",
+const sans = Instrument_Sans({
+  variable: "--font-sans",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const mono = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500"],
 });
 
 export const metadata: Metadata = {
@@ -30,7 +39,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#4B2E83",
+  themeColor: "#F7EFDD",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -38,8 +47,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${cormorant.variable}`}>
-      <body className="antialiased min-h-dvh">{children}</body>
+    <html lang="en" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
+      <body className="antialiased min-h-dvh">
+        <div className="fixed inset-0 -z-10 grain-overlay" aria-hidden />
+        {children}
+      </body>
     </html>
   );
 }

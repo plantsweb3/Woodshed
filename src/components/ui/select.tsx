@@ -8,8 +8,8 @@ export const Select = React.forwardRef<HTMLSelectElement, React.SelectHTMLAttrib
       <select
         ref={ref}
         className={cn(
-          "flex h-10 w-full appearance-none rounded-md border border-input bg-card pl-3 pr-9 py-2 text-sm",
-          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 ring-offset-background",
+          "flex h-10 w-full appearance-none rounded-none border-b-2 border-[color:var(--color-rule)]/40 bg-transparent pl-0 pr-7 py-2 text-sm",
+          "focus-visible:outline-none focus-visible:border-primary transition-colors",
           "disabled:cursor-not-allowed disabled:opacity-60",
           className
         )}
@@ -19,7 +19,7 @@ export const Select = React.forwardRef<HTMLSelectElement, React.SelectHTMLAttrib
       </select>
       <ChevronDown
         aria-hidden
-        className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+        className="pointer-events-none absolute right-1 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
       />
     </div>
   )

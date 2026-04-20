@@ -3,26 +3,28 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 rounded-md text-sm font-medium transition-[background,border,transform,box-shadow] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap",
+  "inline-flex items-center justify-center gap-2 text-sm font-medium transition-[background,border,transform,box-shadow] active:scale-[0.99] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap border",
   {
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground hover:bg-primary/90 shadow-[0_1px_0_rgba(255,255,255,0.15)_inset,0_1px_2px_rgba(75,46,131,0.25)]",
+          "bg-primary text-primary-foreground border-primary hover:bg-primary-ink hover:border-primary-ink shadow-[2px_2px_0_0_var(--color-rule)] hover:shadow-[3px_3px_0_0_var(--color-rule)] hover:-translate-y-[1px]",
         outline:
-          "border border-border bg-card hover:bg-muted text-foreground",
-        ghost: "hover:bg-muted text-foreground",
-        subtle: "bg-primary-soft text-primary hover:bg-primary-soft/80",
-        accent: "bg-accent text-accent-foreground hover:bg-accent/90",
+          "bg-paper border-ink text-ink hover:bg-ink hover:text-paper shadow-[2px_2px_0_0_var(--color-rule)] hover:shadow-[3px_3px_0_0_var(--color-rule)] hover:-translate-y-[1px]",
+        ghost:
+          "border-transparent text-foreground hover:bg-muted",
+        subtle: "bg-primary-soft text-primary border-primary-soft hover:bg-primary-soft/80",
+        accent:
+          "bg-accent text-accent-foreground border-accent-ink shadow-[2px_2px_0_0_var(--color-rule)] hover:shadow-[3px_3px_0_0_var(--color-rule)] hover:-translate-y-[1px]",
         destructive:
-          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-        link: "text-primary underline-offset-4 hover:underline",
+          "bg-destructive text-destructive-foreground border-destructive hover:brightness-95",
+        link: "text-primary underline-offset-4 hover:underline border-transparent",
       },
       size: {
-        sm: "h-8 px-3",
-        default: "h-10 px-4",
-        lg: "h-11 px-6",
-        icon: "h-10 w-10",
+        sm: "h-8 px-3 rounded-sm",
+        default: "h-10 px-4 rounded-sm",
+        lg: "h-11 px-6 rounded-sm",
+        icon: "h-10 w-10 rounded-sm",
       },
     },
     defaultVariants: { variant: "default", size: "default" },

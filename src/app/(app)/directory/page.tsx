@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { SECTIONS, GRADES, CONCERT_INSTRUMENTS } from "@/lib/constants";
-import { Search, Sparkles } from "lucide-react";
+import { Search } from "lucide-react";
 
 interface PageProps {
   searchParams: Promise<{
@@ -75,21 +75,24 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   const rest = members.filter((m) => !m.featured);
 
   return (
-    <div className="flex flex-col gap-8">
-      <div>
-        <h1 className="font-display text-4xl tracking-tight">Directory</h1>
-        <p className="mt-1 text-muted-foreground">
-          The musicians in this program. Tap a name to see what they&apos;re working on.
+    <div className="flex flex-col gap-10">
+      <header className="pt-2">
+        <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Vol. 01 · The Directory</p>
+        <h1 className="mt-1 font-display text-5xl md:text-7xl leading-[0.9] tracking-tight">
+          Everyone in <span className="font-display-italic text-primary">the program.</span>
+        </h1>
+        <p className="mt-3 max-w-xl text-base text-foreground/80 leading-relaxed">
+          Tap any name to see what they&apos;re working on right now. Featured profiles are picked by drum majors — that&apos;s public, deliberate, and rotates.
         </p>
-      </div>
+      </header>
 
       <form
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 p-4 bg-card/60 border border-border rounded-lg"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-5 p-5 bg-paper border border-[color:var(--color-rule)]/40 shadow-[3px_3px_0_0_var(--color-rule)]"
         action="/directory"
       >
-        <div className="relative sm:col-span-2">
-          <Search className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
-          <Input name="q" placeholder="Search by name or instrument" defaultValue={sp.q ?? ""} className="pl-9" />
+        <div className="relative sm:col-span-2 flex items-end">
+          <Search className="h-4 w-4 absolute left-0 bottom-3 text-muted-foreground" />
+          <Input name="q" placeholder="Search by name or instrument" defaultValue={sp.q ?? ""} className="pl-6" />
         </div>
         <Select name="section" defaultValue={sp.section ?? ""}>
           <option value="">All sections</option>
@@ -119,17 +122,25 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
           <input type="checkbox" name="mentor" value="1" defaultChecked={sp.mentor === "1"} className="accent-primary" />
           Available mentors only
         </label>
-        <button className="h-10 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium">Apply</button>
+        <button className="h-10 px-4 rounded-none bg-ink text-paper text-xs font-mono uppercase tracking-[0.18em] font-semibold">
+          Apply filter
+        </button>
       </form>
 
       {featured.length > 0 && (
         <section>
-          <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="h-4 w-4 text-accent-foreground" />
-            <h2 className="font-display text-2xl">Featured</h2>
-            <p className="text-sm text-muted-foreground">— musicians worth knowing about</p>
+          <div className="flex items-end justify-between mb-6">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-accent-ink">№ 01 · Feature</p>
+              <h2 className="font-display text-4xl md:text-5xl leading-[0.9]">
+                <span className="font-display-italic text-primary">Worth</span> knowing about.
+              </h2>
+            </div>
+            <p className="hidden md:block text-xs text-muted-foreground italic max-w-sm text-right">
+              Chosen by this month&apos;s drum majors. Rotated regularly so more students get seen.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 md:gap-8">
             {featured.map((m) => (
               <MemberCard key={m.id} m={m} variant="featured" />
             ))}
@@ -138,11 +149,23 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
       )}
 
       <section>
-        {featured.length > 0 && <h2 className="font-display text-2xl mb-4">Everyone else</h2>}
-        {rest.length === 0 ? (
-          <Card className="p-10 text-center">
-            <p className="font-display text-xl">Nobody matches that filter.</p>
-            <p className="mt-2 text-sm text-muted-foreground">
+        {featured.length > 0 && (
+          <div className="flex items-end justify-between mb-6 pt-4 border-t border-[color:var(--color-rule)]/30">
+            <div>
+              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">№ 02 · The rest</p>
+              <h2 className="font-display text-3xl md:text-4xl">
+                Everyone <span className="font-display-italic text-primary">else.</span>
+              </h2>
+            </div>
+            <p className="text-xs text-muted-foreground font-mono uppercase tracking-widest">
+              {rest.length} member{rest.length === 1 ? "" : "s"}
+            </p>
+          </div>
+        )}
+        {rest.length === 0 && featured.length === 0 ? (
+          <Card className="p-12 text-center">
+            <p className="font-display text-3xl">Nobody matches that filter.</p>
+            <p className="mt-3 text-sm text-muted-foreground max-w-md mx-auto">
               Loosen the filters — or be the first to fill in this corner of the program.
             </p>
           </Card>
@@ -158,5 +181,4 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   );
 }
 
-// Silences unused-import warning for tree-shaken helpers we may use later.
 void inArray;
