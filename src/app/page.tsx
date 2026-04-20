@@ -1,103 +1,127 @@
-import Image from "next/image";
+import Link from "next/link";
+import { APP } from "@/lib/constants";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Users, Lightbulb, Megaphone } from "lucide-react";
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <main className="min-h-dvh bg-background">
+      <header className="border-b border-border/60">
+        <div className="mx-auto max-w-6xl px-6 py-5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Mark />
+            <span className="font-display text-xl tracking-tight">{APP.name}</span>
+          </div>
+          <nav className="flex items-center gap-2">
+            <Link href="/signin">
+              <Button variant="ghost" size="sm">Sign in</Button>
+            </Link>
+            <Link href="/signup">
+              <Button size="sm">Enter {APP.affection}</Button>
+            </Link>
+          </nav>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </header>
+
+      <section className="chrome-grain">
+        <div className="mx-auto max-w-6xl px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
+          <p className="text-xs uppercase tracking-[0.24em] text-primary mb-6">{APP.program}</p>
+          <h1 className="font-display text-5xl sm:text-7xl leading-[0.95] tracking-tight max-w-4xl">
+            Where the work
+            <br />
+            happens.
+          </h1>
+          <p className="mt-8 max-w-2xl text-lg text-muted-foreground leading-relaxed">
+            BAND has your rehearsal schedule. <span className="text-foreground font-medium">The Woodshed</span> is
+            for everything beyond it — mentorship, opportunities, and the musicians who take this seriously.
+          </p>
+          <div className="mt-10 flex flex-wrap items-center gap-3">
+            <Link href="/signup">
+              <Button size="lg" className="gap-2">
+                Enter {APP.affection} <ArrowRight className="h-4 w-4" />
+              </Button>
+            </Link>
+            <Link href="/signin">
+              <Button variant="outline" size="lg">I already have an account</Button>
+            </Link>
+          </div>
+          <p className="mt-4 text-xs text-muted-foreground">
+            Signup requires the current invite code from the band hall.
+          </p>
+        </div>
+      </section>
+
+      <section className="border-t border-border/60 bg-card/60">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <h2 className="font-display text-3xl sm:text-4xl max-w-2xl">A second tier for the sweats.</h2>
+          <p className="mt-5 max-w-3xl text-muted-foreground leading-relaxed">
+            Pieper&apos;s BAND handles rehearsals, announcements, parent updates, bus schedules, and
+            everything official. This is the opt-in layer on top of it — the place where serious
+            musicianship gets visible inside our own program, so nobody has to find out at SAYWE
+            that an All-Stater has been sitting two chairs over all along.
+          </p>
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <FeatureBlock
+              icon={<Users className="h-5 w-5" />}
+              title="See each other"
+              body="A directory of the program's musicians — outside ensembles, private lessons, achievements. Built for students, not parents."
+            />
+            <FeatureBlock
+              icon={<Lightbulb className="h-5 w-5" />}
+              title="Learn from each other"
+              body="Upperclassmen offer mentorship in the skills they've been through. Freshmen post what they need help with. The board is public to members."
+            />
+            <FeatureBlock
+              icon={<Megaphone className="h-5 w-5" />}
+              title="What's out there"
+              body="SAYWE, DCI camps, college clinics, regional auditions — the opportunities BAND doesn't post because they're not Pieper events."
+            />
+          </div>
+        </div>
+      </section>
+
+      <section className="border-t border-border/60">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <h2 className="font-display text-3xl sm:text-4xl max-w-2xl">Who it&apos;s for.</h2>
+          <p className="mt-5 max-w-3xl text-muted-foreground leading-relaxed">
+            Anyone in the program who wants more than the minimum. Freshmen who want to know what&apos;s
+            possible. Upperclassmen who are already grinding and would rather not hide it. Section
+            leaders who want to mentor with something to point at. Drum majors and the director
+            who want the full picture of what their students are working on outside the room.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link href="/signup">
+              <Button size="lg">Enter the Woodshed</Button>
+            </Link>
+            <Link href="/signin">
+              <Button variant="outline" size="lg">Sign in</Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      <footer className="border-t border-border/60 py-8 text-center text-xs text-muted-foreground">
+        Built for the {APP.program}.
       </footer>
+    </main>
+  );
+}
+
+function Mark() {
+  return (
+    <div className="relative h-8 w-8 rounded-md bg-primary text-primary-foreground grid place-items-center">
+      <span className="font-display text-lg leading-none">W</span>
+      <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-accent" />
+    </div>
+  );
+}
+
+function FeatureBlock({ icon, title, body }: { icon: React.ReactNode; title: string; body: string }) {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary-soft text-primary">{icon}</div>
+      <h3 className="font-display text-xl">{title}</h3>
+      <p className="text-sm text-muted-foreground leading-relaxed">{body}</p>
     </div>
   );
 }
