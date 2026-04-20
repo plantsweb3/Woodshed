@@ -74,7 +74,7 @@ export default async function ConsentPage({ params }: PageProps) {
               <CardHeader>
                 <CardTitle>Approve your student&apos;s Woodshed account</CardTitle>
                 <CardDescription>
-                  <strong>{row.studentFirst} {row.studentLast}</strong> — grade {row.studentGrade}, {row.studentSection} — signed up for The Woodshed,
+                  <strong>{row.studentFirst} {row.studentLast}</strong> — grade {row.studentGrade}, {row.studentSection} — signed up for Woodshed,
                   a private app for Pieper Band musicians. We need your permission before their account becomes active.
                 </CardDescription>
               </CardHeader>

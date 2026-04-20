@@ -6,7 +6,7 @@ export default function SignupPage() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Enter the Woodshed</CardTitle>
+        <CardTitle>Enter Woodshed</CardTitle>
         <CardDescription>
           You&apos;ll need the current invite code from the band hall. Your director or drum major can share it.
         </CardDescription>

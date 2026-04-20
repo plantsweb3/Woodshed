@@ -21,7 +21,7 @@ export function MentorOfferAcceptedEmail({
           <p>
             <strong>{mentorName}</strong> offered to help with <em>{skill}</em>. That&apos;s the start.
           </p>
-          <p>Reach out in person — find them at rehearsal or in the band hall. The Woodshed is about making it easier to see each other; the work itself still happens offline.</p>
+          <p>Reach out in person — find them at rehearsal or in the band hall. Woodshed is about making it easier to see each other; the work itself still happens offline.</p>
         </>
       }
       cta={{ label: "See the request", href: `${appUrl}/mentorship` }}

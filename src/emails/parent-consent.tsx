@@ -14,16 +14,16 @@ export function ParentConsentEmail({
 }) {
   return (
     <EmailLayout
-      title="Your student signed up for The Woodshed"
+      title="Your student signed up for Woodshed"
       body={
         <>
           <p>
-            <strong>{studentName}</strong> signed up for The Woodshed — a private, school-adjacent app for the Pieper
+            <strong>{studentName}</strong> signed up for Woodshed — a private, school-adjacent app for the Pieper
             Band of Warriors. It exists so students can track their progress, find mentors, and see opportunities outside
             the official program.
           </p>
           <p>
-            Since your student is under 16, we need your permission before their account becomes active. The Woodshed
+            Since your student is under 16, we need your permission before their account becomes active. Woodshed
             collects: name, grade, section, instruments, an optional bio, opt-in achievements, and practice activity.
             It does <em>not</em> collect grades, teacher evaluations, or anything that would fall under FERPA.
           </p>

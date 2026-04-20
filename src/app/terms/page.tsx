@@ -24,7 +24,7 @@ export default function TermsPage() {
 
         <h2 className="font-display text-2xl mt-8">Who this is for</h2>
         <p>
-          The Woodshed is a private app for current students and staff of the Pieper High School Band of Warriors.
+          Woodshed is a private app for current students and staff of the Pieper High School Band of Warriors.
           You need an invite code to sign up. Access can be revoked at any time by a drum major or the director.
         </p>
 
@@ -39,8 +39,8 @@ export default function TermsPage() {
 
         <h2 className="font-display text-2xl mt-8">What this app is not</h2>
         <p>
-          The Woodshed is <em>not</em> the official Pieper BAND app. Rehearsal schedules, uniform reminders, bus info,
-          and parent communications all live on BAND. Do not use The Woodshed to communicate time-critical logistics.
+          Woodshed is <em>not</em> the official Pieper BAND app. Rehearsal schedules, uniform reminders, bus info,
+          and parent communications all live on BAND. Do not use Woodshed to communicate time-critical logistics.
         </p>
 
         <h2 className="font-display text-2xl mt-8">Acceptable use</h2>
@@ -67,7 +67,7 @@ export default function TermsPage() {
 
         <h2 className="font-display text-2xl mt-8">Limits</h2>
         <p>
-          The Woodshed is provided as-is by Ulysses Munoz and Hailey for the Pieper Band community. It is not an
+          Woodshed is provided as-is by Ulysses Munoz and Hailey for the Pieper Band community. It is not an
           official product of Pieper ISD. If you have an emergency, call 911 or contact a school counselor.
         </p>
 

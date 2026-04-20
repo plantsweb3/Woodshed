@@ -49,7 +49,7 @@ export async function onSignupApproved(userId: string, actorId: string) {
   if (p.emailSignupApproved) {
     await sendEmail({
       to: user.email,
-      subject: "You're in — The Woodshed",
+      subject: "You're in — Woodshed",
       component: SignupApprovedEmail({ firstName: user.firstName, appUrl: appUrl() }),
       actorUserId: actorId,
       targetUserId: userId,
@@ -145,7 +145,7 @@ export async function onFeaturedAdded(userId: string, actorId: string) {
   });
   await sendEmail({
     to: user.email,
-    subject: "You've been featured on The Woodshed",
+    subject: "You've been featured on Woodshed",
     component: FeaturedNoticeEmail({ firstName: user.firstName, appUrl: appUrl() }),
     actorUserId: actorId,
     targetUserId: userId,

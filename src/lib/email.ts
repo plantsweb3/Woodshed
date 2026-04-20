@@ -7,7 +7,7 @@ import { Resend } from "resend";
 import { render } from "@react-email/render";
 import { logAudit } from "./audit";
 
-const FROM_DEFAULT = "The Woodshed <noreply@thewoodshed.app>";
+const FROM_DEFAULT = "Woodshed <noreply@thewoodshed.app>";
 
 function getClient() {
   const key = process.env.RESEND_API_KEY;

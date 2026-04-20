@@ -69,7 +69,7 @@ async function ensureUser(input: {
 }
 
 async function main() {
-  console.log("→ Seeding The Woodshed…");
+  console.log("→ Seeding Woodshed…");
 
   // 1) Invite code
   const [existingCode] = await db.select().from(inviteCodes).where(eq(inviteCodes.code, DEMO_CODE)).limit(1);

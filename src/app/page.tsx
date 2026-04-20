@@ -32,7 +32,7 @@ export default function LandingPage() {
             happens.
           </h1>
           <p className="mt-8 max-w-2xl text-lg text-muted-foreground leading-relaxed">
-            BAND has your rehearsal schedule. <span className="text-foreground font-medium">The Woodshed</span> is
+            BAND has your rehearsal schedule. <span className="text-foreground font-medium">Woodshed</span> is
             for everything beyond it — mentorship, opportunities, and the musicians who take this seriously.
           </p>
           <div className="mt-10 flex flex-wrap items-center gap-3">
@@ -91,7 +91,7 @@ export default function LandingPage() {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <Link href="/signup">
-              <Button size="lg">Enter the Woodshed</Button>
+              <Button size="lg">Enter Woodshed</Button>
             </Link>
             <Link href="/signin">
               <Button variant="outline" size="lg">Sign in</Button>

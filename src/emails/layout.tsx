@@ -40,7 +40,7 @@ export function EmailLayout({ title, greeting, body, cta, footerNote }: EmailLay
             }}
           >
             <Text style={{ fontSize: 12, letterSpacing: 2, textTransform: "uppercase", margin: 0, color: COLORS.accent }}>
-              The Woodshed
+              Woodshed
             </Text>
             <Heading as="h1" style={{ color: COLORS.primaryFg, fontSize: 24, fontWeight: 500, margin: "6px 0 0 0" }}>
               {title}

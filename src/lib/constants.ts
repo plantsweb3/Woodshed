@@ -149,7 +149,7 @@ export const MENTOR_SKILLS = [
 /* ---- Brand strings — use consistently everywhere in the app. ---- */
 
 export const APP = {
-  name: "The Woodshed",
+  name: "Woodshed",
   shortName: "Woodshed",
   affection: "the shed",
   tagline: "Where the work happens.",

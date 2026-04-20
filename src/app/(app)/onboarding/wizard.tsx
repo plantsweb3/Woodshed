@@ -105,7 +105,7 @@ export function OnboardingWizard({
           <div className="flex flex-col gap-5">
             <h1 className="font-display text-3xl sm:text-4xl leading-tight">You&apos;re in, {firstName}.</h1>
             <p className="text-muted-foreground leading-relaxed">
-              Let&apos;s build your profile so the rest of The Woodshed can actually see you. Seven short steps. Every one
+              Let&apos;s build your profile so the rest of Woodshed can actually see you. Seven short steps. Every one
               is skippable, but a filled-in profile is how younger students know what&apos;s possible here.
             </p>
             <div className="flex items-center gap-2 pt-2">
