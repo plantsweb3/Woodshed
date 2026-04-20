@@ -13,8 +13,7 @@ const initial: AuthState = {};
 
 export function SignupForm() {
   const [state, action, pending] = useActionState(signup, initial);
-  const [grade, setGrade] = useState("");
-  const needsParentConsent = grade === "9" || grade === "10";
+  const [, setGrade] = useState("");
   const fe = state.fieldErrors ?? {};
 
   return (
@@ -42,7 +41,7 @@ export function SignupForm() {
             id="grade"
             name="grade"
             required
-            value={grade}
+            defaultValue=""
             onChange={(e) => setGrade(e.target.value)}
           >
             <option value="" disabled>
@@ -93,17 +92,6 @@ export function SignupForm() {
         </Select>
       </Field>
 
-      {needsParentConsent && (
-        <Field
-          label="Parent / guardian email"
-          htmlFor="parentEmail"
-          hint="Required for grades 9–10. They'll get a one-click approval email."
-          error={fe.parentEmail}
-        >
-          <Input id="parentEmail" name="parentEmail" type="email" required />
-        </Field>
-      )}
-
       <Field label="Invite code" htmlFor="inviteCode" hint="Posted in the band hall" error={fe.inviteCode}>
         <Input id="inviteCode" name="inviteCode" required autoCapitalize="characters" />
       </Field>
@@ -120,12 +108,10 @@ export function SignupForm() {
       {state.error ? <p className="text-sm text-destructive">{state.error}</p> : null}
 
       <Button type="submit" disabled={pending} className="mt-2">
-        {pending ? "Submitting…" : "Request access"}
+        {pending ? "Submitting…" : "Create account"}
       </Button>
       <p className="text-xs text-muted-foreground">
-        {needsParentConsent
-          ? "Your account will be pending until your parent/guardian approves it AND a drum major signs off."
-          : "Your account will be pending until your director or drum major approves it."}
+        You&apos;ll go straight into setup after creating your account.
       </p>
     </form>
   );

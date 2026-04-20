@@ -13,7 +13,6 @@ import { rateLimit, ipFromHeaders } from "@/lib/rate-limit";
 import { logAudit, logSignupAttempt } from "@/lib/audit";
 import { SECTIONS, GRADES } from "@/lib/constants";
 import { computeGraduationYear } from "@/lib/graduation";
-import { createConsentAndEmail } from "@/lib/parent-consent";
 import { onSignupCompleted, onSignupStarted } from "@/lib/events";
 import { getOrCreatePreferences } from "@/lib/notifications";
 
@@ -33,26 +32,12 @@ const SignupSchema = z
       .optional()
       .transform((v) => (v ? v : null)),
     inviteCode: z.string().trim().min(1, "Invite code required").max(32),
-    parentEmail: z
-      .string()
-      .trim()
-      .toLowerCase()
-      .email("Enter a parent/guardian email")
-      .optional()
-      .or(z.literal("").transform(() => undefined)),
     tosAccepted: z
       .string()
       .optional()
       .transform((v) => v === "on" || v === "true"),
   })
   .superRefine((data, ctx) => {
-    if (data.grade <= 10 && !data.parentEmail) {
-      ctx.addIssue({
-        code: "custom",
-        path: ["parentEmail"],
-        message: "Parent/guardian email is required for grades 9–10.",
-      });
-    }
     if (!data.tosAccepted) {
       ctx.addIssue({ code: "custom", path: ["tosAccepted"], message: "Please accept the terms and privacy policy." });
     }
@@ -112,9 +97,11 @@ export async function signup(_prev: AuthState, formData: FormData): Promise<Auth
 
   const id = newId();
   const passwordHash = await hashPassword(input.password);
-  const needsParentConsent = input.grade <= 10;
-  const status = needsParentConsent ? "awaiting_parent_consent" : "pending";
   const graduationYear = computeGraduationYear(input.grade);
+
+  // Auto-approve everyone — admin approval gate is off for now.
+  // Re-enable by setting status to "pending" (11-12) or "awaiting_parent_consent" (9-10).
+  const status = "approved" as const;
 
   await db.insert(users).values({
     id,
@@ -128,27 +115,18 @@ export async function signup(_prev: AuthState, formData: FormData): Promise<Auth
     marchingInstrument: input.marchingInstrument,
     role: "student",
     status,
-    parentEmail: input.parentEmail ?? null,
     graduationYear,
+    approvedAt: new Date(),
   });
   await db.insert(profiles).values({ userId: id });
   await getOrCreatePreferences(id);
 
-  if (needsParentConsent && input.parentEmail) {
-    await createConsentAndEmail({
-      userId: id,
-      parentEmail: input.parentEmail,
-      studentName: `${input.firstName} ${input.lastName}`,
-    });
-  }
-
   await logSignupAttempt({ email: input.email, ip, codeUsed: input.inviteCode, success: true });
-  await logAudit({ actorUserId: id, action: "signup", targetType: "user", targetId: id, metadata: { ip, parentRequired: needsParentConsent } });
+  await logAudit({ actorUserId: id, action: "signup", targetType: "user", targetId: id, metadata: { ip, autoApproved: true } });
   await onSignupCompleted(id);
 
   await setSessionCookie(id, "student", status);
-  if (needsParentConsent) redirect("/pending?state=parent");
-  redirect("/pending");
+  redirect("/onboarding");
 }
 
 const SigninSchema = z.object({
