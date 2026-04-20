@@ -5,8 +5,9 @@ import { ProfileEditor } from "./editor";
 import { MENTOR_SKILLS } from "@/lib/constants";
 import { Card } from "@/components/ui/card";
 import { listForUser as listMilestones } from "@/lib/milestones";
+import { summarize } from "@/lib/kudos";
 import { formatDate } from "@/lib/utils";
-import { Flame } from "lucide-react";
+import { Flame, Hand } from "lucide-react";
 
 function profileCompleteness(p: {
   bio: string | null;
@@ -42,6 +43,12 @@ export default async function ProfilePage() {
   });
 
   const earnedMilestones = await listMilestones(me.id);
+  const milestoneKudos = await summarize(
+    "milestone",
+    earnedMilestones.map((m) => m.id),
+    me.id
+  );
+  const totalMilestoneHighFives = Array.from(milestoneKudos.values()).reduce((acc, v) => acc + v.count, 0);
 
   return (
     <div className="flex flex-col gap-6">
@@ -63,6 +70,10 @@ export default async function ProfilePage() {
         <Card className="p-6">
           <ProfileEditor
             initial={{
+              firstName: me.firstName,
+              lastName: me.lastName,
+              workingOn: me.workingOn ?? "",
+              avatarUrl: me.avatarUrl ?? null,
               bio: me.profile?.bio ?? "",
               mentorAvailable: me.profile?.mentorAvailable ?? false,
               mentorSkills: me.profile?.mentorSkills ?? [],
@@ -84,14 +95,29 @@ export default async function ProfilePage() {
               <p className="text-sm text-muted-foreground">Your timeline fills in as you go. Log your first shed to start it.</p>
             ) : (
               <ul className="relative border-l border-border pl-4 flex flex-col gap-3">
-                {earnedMilestones.map((m) => (
-                  <li key={m.id} className="relative">
-                    <span className="absolute -left-[17px] top-1.5 h-2 w-2 rounded-full bg-primary" />
-                    <p className="text-sm font-medium leading-tight">{m.title}</p>
-                    <p className="text-xs text-muted-foreground">{formatDate(m.earnedAt as unknown as Date)}</p>
-                  </li>
-                ))}
+                {earnedMilestones.map((m) => {
+                  const k = milestoneKudos.get(m.id);
+                  return (
+                    <li key={m.id} className="relative">
+                      <span className="absolute -left-[17px] top-1.5 h-2 w-2 rounded-full bg-primary" />
+                      <p className="text-sm font-medium leading-tight">{m.title}</p>
+                      <p className="text-xs text-muted-foreground">{formatDate(m.earnedAt as unknown as Date)}</p>
+                      {k && k.count > 0 && (
+                        <p className="text-xs text-muted-foreground mt-0.5 inline-flex items-center gap-1">
+                          <Hand className="h-3 w-3 fill-current text-accent-foreground" />
+                          {k.count} {k.count === 1 ? "high-five" : "high-fives"}
+                        </p>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
+            )}
+            {totalMilestoneHighFives > 0 && (
+              <p className="mt-4 pt-3 border-t border-border text-xs text-muted-foreground">
+                People have high-fived your milestones {totalMilestoneHighFives}{" "}
+                {totalMilestoneHighFives === 1 ? "time" : "times"}.
+              </p>
             )}
             <Link href="/shed" className="text-xs text-primary hover:underline mt-4 inline-block">
               Go to the shed →

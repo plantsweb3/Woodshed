@@ -40,6 +40,10 @@ export const users = sqliteTable(
 
     // Soft-delete with 7-day grace.
     deletedAt: integer("deleted_at", { mode: "timestamp" }),
+
+    // Social surface — avatar image (data URL or remote), short live status.
+    avatarUrl: text("avatar_url"),
+    workingOn: text("working_on"),
   },
   (t) => ({
     statusIdx: index("users_status_idx").on(t.status),
@@ -436,6 +440,32 @@ export const milestones = sqliteTable(
   })
 );
 
+/* ---------- kudos (peer acknowledgement, non-competitive) ---------- */
+
+export const kudos = sqliteTable(
+  "kudos",
+  {
+    id: text("id").primaryKey(),
+    fromUserId: text("from_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    targetType: text("target_type", { enum: ["profile", "milestone"] }).notNull(),
+    targetId: text("target_id").notNull(),
+    // Who "owns" the target — denormalized so we can fetch counts per recipient quickly.
+    recipientUserId: text("recipient_user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .default(sql`(strftime('%s','now'))`),
+  },
+  (t) => ({
+    senderTargetUnique: uniqueIndex("kudos_sender_target_unique").on(t.fromUserId, t.targetType, t.targetId),
+    targetIdx: index("kudos_target_idx").on(t.targetType, t.targetId),
+    recipientIdx: index("kudos_recipient_idx").on(t.recipientUserId),
+  })
+);
+
 /* ---------- relations ---------- */
 
 export const usersRelations = relations(users, ({ one, many }) => ({
@@ -494,3 +524,4 @@ export type Report = typeof reports.$inferSelect;
 export type Milestone = typeof milestones.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
 export type ParentConsent = typeof parentConsents.$inferSelect;
+export type Kudos = typeof kudos.$inferSelect;

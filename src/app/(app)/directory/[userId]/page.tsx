@@ -1,16 +1,19 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { eq, and } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import { users, profiles } from "@/db/schema";
-import { requireApprovedUser } from "@/lib/session";
+import { requireApprovedUser, getCurrentUser } from "@/lib/session";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { ReportButton } from "@/components/report-button";
-import { Sparkles, Lightbulb, Music, GraduationCap, Medal, BookOpen, ArrowLeft } from "lucide-react";
-import { getCurrentUser } from "@/lib/session";
+import { KudosButton } from "@/components/kudos-button";
+import { Sparkles, Lightbulb, Music, GraduationCap, Medal, BookOpen, ArrowLeft, Flame } from "lucide-react";
+import { countFor, hasGiven, summarize as summarizeKudos } from "@/lib/kudos";
+import { listForUser as listMilestones } from "@/lib/milestones";
+import { formatDate } from "@/lib/utils";
 
 interface PageProps {
   params: Promise<{ userId: string }>;
@@ -22,10 +25,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
   const { userId } = await params;
 
   const [row] = await db
-    .select({
-      user: users,
-      profile: profiles,
-    })
+    .select({ user: users, profile: profiles })
     .from(users)
     .leftJoin(profiles, eq(users.id, profiles.userId))
     .where(eq(users.id, userId))
@@ -44,6 +44,16 @@ export default async function MemberProfilePage({ params }: PageProps) {
   const mentorSkills = profile?.mentorSkills ?? [];
   const isSelf = viewer?.id === user.id;
 
+  const profileKudosCount = await countFor("profile", user.id);
+  const profileKudosGiven = viewer && !isSelf ? await hasGiven(viewer.id, "profile", user.id) : false;
+
+  const theirMilestones = await listMilestones(user.id);
+  const milestoneKudos = await summarizeKudos(
+    "milestone",
+    theirMilestones.map((m) => m.id),
+    viewer?.id ?? null
+  );
+
   return (
     <div className="flex flex-col gap-8">
       <Link href="/directory" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
@@ -52,7 +62,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
 
       <Card className="p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:items-center gap-5">
-          <Avatar name={fullName} className="h-16 w-16 text-base" />
+          <Avatar name={fullName} src={user.avatarUrl} className="h-20 w-20 text-lg" />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="font-display text-3xl sm:text-4xl tracking-tight">{fullName}</h1>
@@ -76,14 +86,40 @@ export default async function MemberProfilePage({ params }: PageProps) {
               {user.marchingInstrument ? ` / ${user.marchingInstrument} (marching)` : ""}
             </p>
           </div>
-          {profile?.mentorAvailable && user.status === "approved" && (
-            <Link href={`/mentorship/new?to=${user.id}`}>
-              <Button size="lg" className="gap-2">
-                <Lightbulb className="h-4 w-4" /> Request mentorship
-              </Button>
-            </Link>
-          )}
+          <div className="flex flex-col items-end gap-2">
+            {profile?.mentorAvailable && user.status === "approved" && (
+              <Link href={`/mentorship/new?to=${user.id}`}>
+                <Button size="lg" className="gap-2">
+                  <Lightbulb className="h-4 w-4" /> Request mentorship
+                </Button>
+              </Link>
+            )}
+            {!isSelf && viewer && (
+              <KudosButton
+                targetType="profile"
+                targetId={user.id}
+                initialCount={profileKudosCount}
+                initialGiven={profileKudosGiven}
+              />
+            )}
+            {isSelf && profileKudosCount > 0 && (
+              <p className="text-xs text-muted-foreground">
+                {profileKudosCount} {profileKudosCount === 1 ? "person has" : "people have"} high-fived your profile.
+              </p>
+            )}
+          </div>
         </div>
+
+        {user.workingOn && (
+          <div className="mt-5 flex items-start gap-2.5 p-3 rounded-md bg-primary-soft/50 border border-primary/10">
+            <Music className="h-4 w-4 mt-0.5 text-primary shrink-0" />
+            <div>
+              <p className="text-[11px] uppercase tracking-wide text-primary font-medium">In the shed right now</p>
+              <p className="text-sm mt-0.5">{user.workingOn}</p>
+            </div>
+          </div>
+        )}
+
         {bioHidden ? (
           <p className="mt-6 text-sm text-muted-foreground italic">Bio hidden by moderation.</p>
         ) : profile?.bio ? (
@@ -167,6 +203,44 @@ export default async function MemberProfilePage({ params }: PageProps) {
           )}
         </Section>
       </div>
+
+      {theirMilestones.length > 0 && (
+        <Card className="p-6">
+          <div className="flex items-center gap-2 mb-4 text-muted-foreground">
+            <Flame className="h-4 w-4" />
+            <h2 className="text-xs uppercase tracking-wide font-medium">Milestones on Woodshed</h2>
+          </div>
+          <ul className="relative border-l border-border pl-4 flex flex-col gap-4 max-w-2xl">
+            {theirMilestones.map((m) => {
+              const k = milestoneKudos.get(m.id) ?? { count: 0, mine: false };
+              return (
+                <li key={m.id} className="relative">
+                  <span className="absolute -left-[17px] top-1.5 h-2 w-2 rounded-full bg-primary" />
+                  <p className="text-sm font-medium leading-tight">{m.title}</p>
+                  <p className="text-xs text-muted-foreground">{formatDate(m.earnedAt as unknown as Date)}</p>
+                  <div className="mt-1.5">
+                    {!isSelf && viewer ? (
+                      <KudosButton
+                        targetType="milestone"
+                        targetId={m.id}
+                        initialCount={k.count}
+                        initialGiven={k.mine}
+                        size="sm"
+                      />
+                    ) : (
+                      k.count > 0 && (
+                        <p className="text-xs text-muted-foreground inline-flex items-center gap-1">
+                          <span>· {k.count} {k.count === 1 ? "high-five" : "high-fives"}</span>
+                        </p>
+                      )
+                    )}
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        </Card>
+      )}
     </div>
   );
 }

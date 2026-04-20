@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useRef, useState } from "react";
 import { saveProfile, type ProfileFormState } from "@/app/actions/profile";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,8 +8,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Field } from "@/components/ui/field";
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Trash2, CheckCircle2 } from "lucide-react";
+import { Avatar } from "@/components/ui/avatar";
+import { Plus, Trash2, CheckCircle2, Camera, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { resizeAvatarClient } from "@/lib/images";
 
 interface Ensemble {
   name: string;
@@ -27,6 +29,10 @@ interface Achievement {
 }
 
 interface Initial {
+  firstName: string;
+  lastName: string;
+  workingOn: string;
+  avatarUrl: string | null;
   bio: string;
   mentorAvailable: boolean;
   mentorSkills: string[];
@@ -54,14 +60,86 @@ export function ProfileEditor({
   const [achievements, setAchievements] = useState<Achievement[]>(
     initial.achievements.length ? initial.achievements : []
   );
+  const [avatar, setAvatar] = useState<string | null>(initial.avatarUrl);
+  const [avatarPayload, setAvatarPayload] = useState<string>(""); // "", "__clear__", or data URL
+  const [avatarError, setAvatarError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const onPickFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    try {
+      const dataUrl = await resizeAvatarClient(file);
+      setAvatar(dataUrl);
+      setAvatarPayload(dataUrl);
+      setAvatarError(null);
+    } catch (err) {
+      setAvatarError(err instanceof Error ? err.message : "Couldn't process that image.");
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
+  };
+
+  const clearAvatar = () => {
+    setAvatar(null);
+    setAvatarPayload("__clear__");
+  };
 
   const toggleSkill = (s: string) =>
     setMentorSkills((prev) => (prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s]));
 
   return (
     <form action={action} className="flex flex-col gap-8">
+      {/* Photo + working on */}
+      <div className="flex items-start gap-5 flex-wrap">
+        <div className="flex flex-col items-center gap-2">
+          <Avatar name={`${initial.firstName} ${initial.lastName}`} src={avatar} className="h-24 w-24 text-lg" />
+          <div className="flex items-center gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              className="sr-only"
+              onChange={onPickFile}
+            />
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="gap-1"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              <Camera className="h-3.5 w-3.5" /> {avatar ? "Change" : "Add photo"}
+            </Button>
+            {avatar && (
+              <Button type="button" size="sm" variant="ghost" className="gap-1" onClick={clearAvatar}>
+                <X className="h-3.5 w-3.5" /> Remove
+              </Button>
+            )}
+          </div>
+          {avatarError && <p className="text-xs text-destructive">{avatarError}</p>}
+          <input type="hidden" name="avatarUrl" value={avatarPayload} />
+        </div>
+
+        <div className="flex-1 min-w-56">
+          <Field
+            label="What I'm working on right now"
+            htmlFor="workingOn"
+            hint="Short and live — e.g. 'Region audition etude, m. 24 onward.' Shows on your card in the directory."
+          >
+            <Input
+              id="workingOn"
+              name="workingOn"
+              defaultValue={initial.workingOn}
+              maxLength={140}
+              placeholder="Region audition etude, measures 24 onward."
+            />
+          </Field>
+        </div>
+      </div>
+
       {/* Bio */}
-      <Field label="Bio" htmlFor="bio" hint="A few lines about what you're working on and where you're trying to go.">
+      <Field label="Bio" htmlFor="bio" hint="A few lines about yourself. The long-form — 'working on' above is for what's happening right now.">
         <Textarea id="bio" name="bio" defaultValue={initial.bio} rows={5} maxLength={1200} />
       </Field>
 

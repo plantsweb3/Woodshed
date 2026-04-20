@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar } from "@/components/ui/avatar";
-import { Sparkles, Lightbulb } from "lucide-react";
+import { Sparkles, Lightbulb, Music } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export interface MemberCardData {
@@ -16,6 +16,8 @@ export interface MemberCardData {
   mentorAvailable: boolean;
   featured: boolean;
   achievementCount: number;
+  avatarUrl: string | null;
+  workingOn: string | null;
 }
 
 export function MemberCard({ m, variant = "default" }: { m: MemberCardData; variant?: "default" | "featured" }) {
@@ -30,7 +32,7 @@ export function MemberCard({ m, variant = "default" }: { m: MemberCardData; vari
         )}
       >
         <div className="flex items-start gap-3">
-          <Avatar name={name} className={cn(isFeatured && "h-12 w-12")} />
+          <Avatar name={name} src={m.avatarUrl} className={cn("h-12 w-12", isFeatured && "h-14 w-14")} />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="font-display text-lg leading-tight truncate">{name}</h3>
@@ -49,7 +51,15 @@ export function MemberCard({ m, variant = "default" }: { m: MemberCardData; vari
             </p>
           </div>
         </div>
-        <div className="mt-4 flex flex-wrap gap-1.5">
+
+        {m.workingOn && (
+          <div className="mt-3 flex items-start gap-2 p-2.5 rounded-md bg-muted/60 text-sm">
+            <Music className="h-3.5 w-3.5 mt-0.5 text-primary shrink-0" />
+            <p className="text-foreground/90 line-clamp-2 leading-snug">{m.workingOn}</p>
+          </div>
+        )}
+
+        <div className="mt-3 flex flex-wrap gap-1.5">
           {m.mentorAvailable && (
             <Badge variant="primary" className="gap-1">
               <Lightbulb className="h-3 w-3" /> Mentor

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { eq } from "drizzle-orm";
 import { z } from "zod";
 import { db } from "@/db";
-import { profiles } from "@/db/schema";
+import { profiles, users } from "@/db/schema";
 import { requireApprovedUser } from "@/lib/session";
 import { logAudit } from "@/lib/audit";
 
@@ -30,6 +30,21 @@ const ProfileSchema = z.object({
   outsideEnsembles: z.array(EnsembleSchema).max(15).default([]),
   privateLessons: z.array(LessonSchema).max(10).default([]),
   achievements: z.array(AchievementSchema).max(25).default([]),
+  workingOn: z
+    .string()
+    .trim()
+    .max(140, "Keep this under 140 characters.")
+    .optional()
+    .transform((v) => (v ? v : null)),
+  avatarUrl: z
+    .string()
+    .max(200_000, "Image too large after resize. Try a smaller original.")
+    .optional()
+    .transform((v) => (v ? v : null))
+    .refine(
+      (v) => !v || v.startsWith("data:image/") || v.startsWith("https://") || v === "__clear__",
+      "Bad avatar payload"
+    ),
 });
 
 export interface ProfileFormState {
@@ -46,12 +61,15 @@ export async function saveProfile(_prev: ProfileFormState, formData: FormData): 
     outsideEnsembles: JSON.parse((formData.get("outsideEnsembles") as string) || "[]"),
     privateLessons: JSON.parse((formData.get("privateLessons") as string) || "[]"),
     achievements: JSON.parse((formData.get("achievements") as string) || "[]"),
+    workingOn: formData.get("workingOn") ?? "",
+    avatarUrl: formData.get("avatarUrl") ?? "",
   };
   const parsed = ProfileSchema.safeParse(raw);
   if (!parsed.success) {
     return { error: parsed.error.issues[0]?.message ?? "Please fix errors and try again." };
   }
   const p = parsed.data;
+
   await db
     .update(profiles)
     .set({
@@ -72,9 +90,34 @@ export async function saveProfile(_prev: ProfileFormState, formData: FormData): 
       updatedAt: new Date(),
     })
     .where(eq(profiles.userId, user.id));
+
+  // workingOn + avatarUrl live on `users`.
+  const userPatch: { workingOn?: string | null; avatarUrl?: string | null } = {};
+  userPatch.workingOn = p.workingOn;
+  if (p.avatarUrl === "__clear__") userPatch.avatarUrl = null;
+  else if (p.avatarUrl) userPatch.avatarUrl = p.avatarUrl;
+  // if avatarUrl unset, leave existing
+  if (Object.keys(userPatch).length) {
+    await db.update(users).set(userPatch).where(eq(users.id, user.id));
+  }
+
   await logAudit({ actorUserId: user.id, action: "profile_update", targetType: "profile", targetId: user.id });
   revalidatePath("/profile");
   revalidatePath(`/directory/${user.id}`);
   revalidatePath("/directory");
   return { ok: true };
+}
+
+const StatusSchema = z.object({
+  workingOn: z.string().trim().max(140).optional().transform((v) => (v ? v : null)),
+});
+
+export async function saveWorkingOn(formData: FormData) {
+  const user = await requireApprovedUser();
+  const parsed = StatusSchema.safeParse({ workingOn: formData.get("workingOn") ?? "" });
+  if (!parsed.success) return;
+  await db.update(users).set({ workingOn: parsed.data.workingOn }).where(eq(users.id, user.id));
+  revalidatePath("/profile");
+  revalidatePath("/directory");
+  revalidatePath(`/directory/${user.id}`);
 }
