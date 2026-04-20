@@ -157,7 +157,7 @@ export function OnboardingWizard({
               render={(e, _i, update) => (
                 <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-2">
                   <Input
-                    placeholder="SAYWE, UIW Orchestra, church ensemble…"
+                    placeholder="SAYWE, community band, church ensemble…"
                     value={e.name}
                     onChange={(ev) => update({ ...e, name: ev.target.value })}
                   />

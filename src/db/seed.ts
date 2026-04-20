@@ -142,7 +142,7 @@ async function main() {
         mentorSkills: ["All-State audition prep", "Brass technique", "Mental game"],
         outsideEnsembles: [
           { name: "SAYWE Symphonic Winds", startYear: 2023 },
-          { name: "UIW Honor Band", startYear: 2024 },
+          { name: "Regional Honor Band", startYear: 2024 },
         ],
         privateLessons: [{ teacher: "Sam Reyna", focus: "Classical trumpet" }],
         achievements: [
@@ -265,11 +265,11 @@ async function main() {
       },
       {
         id: newId(),
-        title: "UIW Wind Symposium — Student day",
+        title: "College Wind Symposium — Student day",
         description:
-          "Masterclasses with UIW faculty, open to high school musicians in woodwinds and brass. Free with registration. Great intro to the UIW program.",
+          "Masterclasses with college faculty, open to high school musicians in woodwinds and brass. Free with registration. Great intro to a college music program.",
         opportunityType: "college_clinic",
-        link: "https://example.org/uiw-symposium",
+        link: "https://example.org/wind-symposium",
         deadlineDate: in14,
         sections: ["Flute", "Clarinet", "Saxophone", "Double Reed", "Trumpet", "Horn", "Trombone", "Low Brass"],
         postedBy: haileyId,
