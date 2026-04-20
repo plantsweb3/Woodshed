@@ -89,7 +89,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
         <div>
           <div className="flex items-center gap-3 flex-wrap mb-3">
             <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">
-              Profile № {user.id.slice(0, 4).toUpperCase()} · Vol. 01
+              Pieper Band of Warriors
             </p>
             {profile?.featured && (
               <span className="stamp text-accent-ink">

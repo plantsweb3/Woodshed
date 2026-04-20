@@ -77,7 +77,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   return (
     <div className="flex flex-col gap-10">
       <header className="pt-2">
-        <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">Vol. 01 · The Directory</p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">The Directory</p>
         <h1 className="mt-1 font-display text-5xl md:text-7xl leading-[0.9] tracking-tight">
           Everyone in <span className="font-display-italic text-primary">the program.</span>
         </h1>
@@ -131,7 +131,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
         <section>
           <div className="flex items-end justify-between mb-6">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-accent-ink">№ 01 · Feature</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-accent-ink">Feature</p>
               <h2 className="font-display text-4xl md:text-5xl leading-[0.9]">
                 <span className="font-display-italic text-primary">Worth</span> knowing about.
               </h2>
@@ -152,7 +152,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
         {featured.length > 0 && (
           <div className="flex items-end justify-between mb-6 pt-4 border-t border-[color:var(--color-rule)]/30">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">№ 02 · The rest</p>
+              <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">The rest</p>
               <h2 className="font-display text-3xl md:text-4xl">
                 Everyone <span className="font-display-italic text-primary">else.</span>
               </h2>

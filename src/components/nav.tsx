@@ -51,9 +51,6 @@ export function AppNav({
             </div>
             <div className="hidden sm:flex flex-col leading-none">
               <span className="font-display text-lg tracking-tight">{APP.name}</span>
-              <span className="font-mono text-[9px] uppercase tracking-[0.22em] text-muted-foreground">
-                Vol. 01
-              </span>
             </div>
           </Link>
           <nav className="hidden md:flex items-center">

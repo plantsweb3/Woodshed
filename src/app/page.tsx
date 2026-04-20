@@ -10,8 +10,7 @@ export default function LandingPage() {
       <header className="border-b-4 border-double border-[color:var(--color-rule)]">
         <div className="mx-auto max-w-7xl px-6 py-3 flex items-center justify-between text-[11px] uppercase tracking-[0.22em]">
           <div className="flex items-center gap-4">
-            <span className="font-mono">№ 01</span>
-            <span className="hidden sm:inline text-muted-foreground">Est. 2026 · Pieper ISD</span>
+            <span className="font-mono text-muted-foreground">Pieper Band of Warriors</span>
           </div>
           <div className="flex items-center gap-4">
             <Link href="/signin" className="hover:underline underline-offset-4">Sign in</Link>
@@ -167,7 +166,7 @@ function Column({ num, title, italic, children }: { num: string; title: string; 
   const before = title.split(italic)[0];
   return (
     <div className="px-0 md:px-8 py-8 first:pt-0 md:first:pt-8 last:pb-0 md:last:pb-8">
-      <p className="font-mono text-xs text-accent-ink">№ {num}</p>
+      <p className="font-mono text-xs text-accent-ink">{num}</p>
       <h3 className="mt-3 font-display text-3xl leading-tight tracking-tight">
         {before}<span className="font-display-italic text-primary">{italic}</span>
       </h3>
