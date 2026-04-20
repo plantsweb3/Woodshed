@@ -106,7 +106,7 @@ export function ProfileEditor({
       {/* Outside ensembles */}
       <DynamicList<Ensemble>
         title="Outside ensembles"
-        hint="SAYWE, UIW Orchestra, community bands, DCI corps, honor ensembles."
+        hint="SAYWE, community bands, DCI corps, honor ensembles, church groups."
         items={ensembles}
         onChange={setEnsembles}
         empty={{ name: "", startYear: null, notes: "" }}
