@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import { count } from "drizzle-orm";
 import { db } from "@/db";
 import { users } from "@/db/schema";
+
+export const dynamic = "force-dynamic";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { APP } from "@/lib/constants";
 import { SetupForm } from "./form";
