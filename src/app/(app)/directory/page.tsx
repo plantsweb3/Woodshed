@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import { SECTIONS, GRADES, CONCERT_INSTRUMENTS } from "@/lib/constants";
 import { Search } from "lucide-react";
+import { computeProgramPulse, pct } from "@/lib/pulse";
 
 interface PageProps {
   searchParams: Promise<{
@@ -74,6 +75,8 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
   const featured = members.filter((m) => m.featured);
   const rest = members.filter((m) => !m.featured);
 
+  const pulse = await computeProgramPulse();
+
   return (
     <div className="flex flex-col gap-10">
       <header className="pt-2">
@@ -85,6 +88,42 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
           Tap any name to see what they&apos;re working on right now. Featured profiles are picked by drum majors — that&apos;s public, deliberate, and rotates.
         </p>
       </header>
+
+      {/* Pulse — making the hidden norm visible */}
+      <section className="border-y-4 border-double border-[color:var(--color-rule)] py-6">
+        <p className="label-eyebrow text-accent-ink mb-3">The Warriors, in the open</p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-6 gap-y-5">
+          <PulseStat
+            value={`${pct(pulse.withLessons, pulse.total)}%`}
+            label="take private lessons"
+            note={`${pulse.withLessons} of ${pulse.total} members`}
+          />
+          <PulseStat
+            value={`${pct(pulse.withOutside, pulse.total)}%`}
+            label="play outside Pieper"
+            note="SAYWE, honor band, DCI…"
+          />
+          <PulseStat
+            value={`${pct(pulse.withAchievements, pulse.total)}%`}
+            label="have honors logged"
+            note="All-Region, S&E, more"
+          />
+          <PulseStat
+            value={pulse.mentorAvailable.toString()}
+            label="mentors available"
+            note={`${pct(pulse.mentorAvailable, pulse.total)}% of program`}
+          />
+          <PulseStat
+            value={pulse.shedThisWeek.toString()}
+            label="in the shed this week"
+            note={`${pulse.shoutoutsThisMonth} shoutouts this month`}
+          />
+        </div>
+        <p className="text-xs text-muted-foreground italic mt-4 max-w-2xl">
+          The point isn&apos;t the numbers — it&apos;s that we know them about each other. Hidden effort
+          shrinks. Visible effort spreads.
+        </p>
+      </section>
 
       <form
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-x-6 gap-y-5 p-5 bg-paper border border-[color:var(--color-rule)]/40 shadow-[3px_3px_0_0_var(--color-rule)]"
@@ -182,3 +221,13 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
 }
 
 void inArray;
+
+function PulseStat({ value, label, note }: { value: string; label: string; note: string }) {
+  return (
+    <div>
+      <p className="font-display text-4xl md:text-5xl leading-none text-primary">{value}</p>
+      <p className="mt-1 text-sm font-medium leading-tight">{label}</p>
+      <p className="mt-0.5 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">{note}</p>
+    </div>
+  );
+}

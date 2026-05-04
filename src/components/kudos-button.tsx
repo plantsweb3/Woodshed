@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { toggleKudos } from "@/app/actions/kudos";
 
 interface Props {
-  targetType: "profile" | "milestone";
+  targetType: "profile" | "milestone" | "shoutout";
   targetId: string;
   initialCount: number;
   initialGiven: boolean;

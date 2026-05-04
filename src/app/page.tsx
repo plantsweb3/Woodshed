@@ -13,6 +13,8 @@ export default function LandingPage() {
             <span className="font-mono text-muted-foreground">Pieper Band of Warriors</span>
           </div>
           <div className="flex items-center gap-4">
+            <Link href="/why" className="hover:underline underline-offset-4">Why this exists</Link>
+            <span className="hidden sm:inline text-muted-foreground">|</span>
             <Link href="/signin" className="hover:underline underline-offset-4">Sign in</Link>
             <span className="hidden sm:inline text-muted-foreground">|</span>
             <Link href="/signup" className="hover:underline underline-offset-4">Request access</Link>

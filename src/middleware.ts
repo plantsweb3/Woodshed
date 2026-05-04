@@ -8,6 +8,7 @@ const PUBLIC_EXACT = new Set([
   "/terms",
   "/privacy",
   "/setup",
+  "/why",
   "/manifest.webmanifest",
   "/favicon.ico",
 ]);

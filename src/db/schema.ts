@@ -440,6 +440,33 @@ export const milestones = sqliteTable(
   })
 );
 
+/* ---------- shoutouts (peer-led visibility — outside-Pieper work) ---------- */
+
+export const shoutouts = sqliteTable(
+  "shoutouts",
+  {
+    id: text("id").primaryKey(),
+    authorId: text("author_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    kind: text("kind", {
+      enum: ["summer_program", "audition", "lesson", "honor", "performance", "camp", "other"],
+    })
+      .notNull()
+      .default("other"),
+    title: text("title").notNull(),
+    body: text("body"),
+    hiddenAt: integer("hidden_at", { mode: "timestamp" }),
+    createdAt: integer("created_at", { mode: "timestamp" })
+      .notNull()
+      .default(sql`(strftime('%s','now'))`),
+  },
+  (t) => ({
+    createdIdx: index("shoutouts_created_idx").on(t.createdAt),
+    authorIdx: index("shoutouts_author_idx").on(t.authorId),
+  })
+);
+
 /* ---------- kudos (peer acknowledgement, non-competitive) ---------- */
 
 export const kudos = sqliteTable(
@@ -449,7 +476,7 @@ export const kudos = sqliteTable(
     fromUserId: text("from_user_id")
       .notNull()
       .references(() => users.id, { onDelete: "cascade" }),
-    targetType: text("target_type", { enum: ["profile", "milestone"] }).notNull(),
+    targetType: text("target_type", { enum: ["profile", "milestone", "shoutout"] }).notNull(),
     targetId: text("target_id").notNull(),
     // Who "owns" the target — denormalized so we can fetch counts per recipient quickly.
     recipientUserId: text("recipient_user_id")
@@ -525,3 +552,4 @@ export type Milestone = typeof milestones.$inferSelect;
 export type Session = typeof sessions.$inferSelect;
 export type ParentConsent = typeof parentConsents.$inferSelect;
 export type Kudos = typeof kudos.$inferSelect;
+export type Shoutout = typeof shoutouts.$inferSelect;

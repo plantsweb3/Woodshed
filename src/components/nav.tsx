@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Users, Lightbulb, Megaphone, Shield, User as UserIcon, Flame } from "lucide-react";
+import { Users, Lightbulb, Megaphone, Shield, User as UserIcon, Flame, Mic } from "lucide-react";
 import { APP } from "@/lib/constants";
 import { SignoutButton } from "./signout-button";
 import { cn } from "@/lib/utils";
@@ -18,6 +18,7 @@ interface NavItem {
 
 const studentTabs: NavItem[] = [
   { href: "/directory", label: "Directory", italicSlice: "ory", icon: Users },
+  { href: "/shoutouts", label: "Shoutouts", italicSlice: "outs", icon: Mic },
   { href: "/mentorship", label: "Mentorship", italicSlice: "ship", icon: Lightbulb },
   { href: "/opportunities", label: "Opportunities", italicSlice: "tunities", icon: Megaphone },
   { href: "/shed", label: "The Shed", italicSlice: "Shed", icon: Flame },

@@ -2,7 +2,7 @@ import { and, count, eq, inArray } from "drizzle-orm";
 import { db } from "@/db";
 import { kudos, milestones } from "@/db/schema";
 
-export type KudosTargetType = "profile" | "milestone";
+export type KudosTargetType = "profile" | "milestone" | "shoutout";
 
 export async function countFor(targetType: KudosTargetType, targetId: string) {
   const [row] = await db
