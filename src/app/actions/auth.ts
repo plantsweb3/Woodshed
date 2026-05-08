@@ -99,8 +99,9 @@ export async function signup(_prev: AuthState, formData: FormData): Promise<Auth
   const passwordHash = await hashPassword(input.password);
   const graduationYear = computeGraduationYear(input.grade);
 
-  // Approval gate: signups land as "pending" until a drum major or director approves.
-  const status = "pending" as const;
+  // Approval gate is OFF — signups land as approved and go straight into onboarding.
+  // To re-enable: set status to "pending" and redirect to "/pending".
+  const status = "approved" as const;
 
   await db.insert(users).values({
     id,
@@ -115,16 +116,17 @@ export async function signup(_prev: AuthState, formData: FormData): Promise<Auth
     role: "student",
     status,
     graduationYear,
+    approvedAt: new Date(),
   });
   await db.insert(profiles).values({ userId: id });
   await getOrCreatePreferences(id);
 
   await logSignupAttempt({ email: input.email, ip, codeUsed: input.inviteCode, success: true });
-  await logAudit({ actorUserId: id, action: "signup", targetType: "user", targetId: id });
+  await logAudit({ actorUserId: id, action: "signup", targetType: "user", targetId: id, metadata: { autoApproved: true } });
   await onSignupCompleted(id);
 
   await setSessionCookie(id, "student", status);
-  redirect("/pending");
+  redirect("/onboarding");
 }
 
 const SigninSchema = z.object({
