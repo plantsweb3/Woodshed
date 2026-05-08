@@ -184,14 +184,14 @@ export function ProfileEditor({
       {/* Outside ensembles */}
       <DynamicList<Ensemble>
         title="Outside ensembles"
-        hint="SAYWE, community bands, DCI corps, honor ensembles, church groups."
+        hint="Regional honor bands, community bands, DCI corps, youth wind ensembles, church groups."
         items={ensembles}
         onChange={setEnsembles}
         empty={{ name: "", startYear: null, notes: "" }}
         render={(e, i, update) => (
           <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-2">
             <Input
-              placeholder="Ensemble name (e.g. SAYWE)"
+              placeholder="Ensemble name (e.g. Regional Honor Band)"
               value={e.name}
               onChange={(ev) => update({ ...e, name: ev.target.value })}
             />

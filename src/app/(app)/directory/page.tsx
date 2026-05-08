@@ -101,7 +101,7 @@ export default async function DirectoryPage({ searchParams }: PageProps) {
           <PulseStat
             value={`${pct(pulse.withOutside, pulse.total)}%`}
             label="play outside Pieper"
-            note="SAYWE, honor band, DCI…"
+            note="Honor band, DCI, regional…"
           />
           <PulseStat
             value={`${pct(pulse.withAchievements, pulse.total)}%`}

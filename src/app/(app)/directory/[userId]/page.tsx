@@ -185,7 +185,7 @@ export default async function MemberProfilePage({ params }: PageProps) {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
           <Section label="Outside ensembles">
             {ensembles.length === 0 ? (
-              <Empty text="None listed. (SAYWE, DCI, community symphony, honor band — fair game.)" />
+              <Empty text="None listed. (Honor band, DCI, community symphony, youth wind ensemble — fair game.)" />
             ) : (
               <ul className="flex flex-col gap-3">
                 {ensembles.map((e, i) => (

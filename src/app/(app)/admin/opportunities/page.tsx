@@ -46,7 +46,7 @@ export default async function AdminOpportunitiesPage() {
       {rows.length === 0 ? (
         <Card className="p-10 text-center">
           <p className="font-display text-xl">Nothing posted yet.</p>
-          <p className="mt-2 text-sm text-muted-foreground">Start with the closest upcoming SAYWE or All-Region deadline.</p>
+          <p className="mt-2 text-sm text-muted-foreground">Start with the closest upcoming honor-band or All-Region deadline.</p>
         </Card>
       ) : (
         <Card>

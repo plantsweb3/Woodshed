@@ -35,15 +35,15 @@ export default function WhyPage() {
 
         <Section roman="I." title="The diagnosis">
           <Paragraph dropCap>
-            Pieper has All-State-level musicians who don&apos;t know other All-Staters
-            are in the same program — because nobody talks about their outside work. Fred
-            two chairs down has been at SAYWE since freshman year. The freshman three
-            seats up takes lessons every Saturday morning. Neither of them knows about
-            the other. They&apos;re both protecting themselves.
+            Pieper has more dedicated musicians than most of the program realizes.
+            Upperclassmen training outside rehearsal. Freshmen who&apos;d commit harder if
+            they saw what was possible. Section leaders quietly mentoring. A real layer
+            of serious work happens here — and almost none of it is visible to the rest
+            of the band.
           </Paragraph>
           <Paragraph>
-            The instinct to hide isn&apos;t a Pieper-specific quirk. It&apos;s a sixty-five-year-old
-            documented phenomenon in American adolescents.
+            That instinct to keep effort quiet isn&apos;t a Pieper quirk. It&apos;s a
+            sixty-five-year-old documented phenomenon in American adolescents.
           </Paragraph>
 
           <PullQuote
@@ -62,8 +62,8 @@ export default function WhyPage() {
             Forty-two years later, Cornell&apos;s John Bishop surveyed 100,000+ students
             across 350 schools and produced what he called the <em>harassment curve</em>:
             both slackers and students who exceeded the local effort norm got teased
-            weekly. The middle gets enforced from both sides. That&apos;s why our All-Staters
-            hide. It&apos;s rational self-protection.
+            weekly. The middle gets enforced from both sides. That&apos;s why dedicated
+            musicians keep their work quiet — it&apos;s rational self-protection.
           </Paragraph>
           <Paragraph>
             But there&apos;s a meaner trick happening underneath: <em>pluralistic ignorance</em>.
@@ -156,9 +156,9 @@ export default function WhyPage() {
               the open.
             </ListItem>
             <ListItem>
-              <strong>Opportunities</strong> are the things BAND doesn&apos;t post — SAYWE
-              auditions, DCI camps, college clinics, regional honor bands. The pipeline
-              that makes elite musicians becomes legible to younger students.
+              <strong>Opportunities</strong> are the things BAND doesn&apos;t post — regional
+              honor band auditions, DCI camps, college clinics, scholarship deadlines.
+              The pipeline that makes elite musicians becomes legible to younger students.
             </ListItem>
             <ListItem>
               <strong>The Shed</strong> is the practice log. Every session is &ldquo;a shed.&rdquo;
@@ -180,39 +180,40 @@ export default function WhyPage() {
 
         <Section roman="V." title="The drum major's leverage">
           <Paragraph>
-            The drum major is the single student role with the structural authority to
-            publicly model effort without it reading as bragging. Research on
-            student-led culture change is consistent: a peer leader can shift program
-            norms in 1-2 years if they (a) name the hidden norm out loud, (b) model the
-            new behavior themselves, (c) build a recognition structure peers own, and
-            (d) recruit co-conspirators so the new norm has critical mass before they
-            graduate.
+            The drum major is the student role with structural authority to publicly
+            model effort without it reading as bragging. Research on student-led culture
+            change is consistent: a peer leader can shift program norms in 1-2 years if
+            they (a) name the hidden norm out loud, (b) model the new behavior
+            themselves, (c) build a recognition structure peers own, and (d) recruit
+            co-conspirators so the new norm has critical mass before they graduate.
           </Paragraph>
           <Paragraph>
-            None of this requires a sophomore to wait for permission. The directory grows
-            the moment members start filling profiles. The mentorship board works the
-            moment one upperclassman offers to help one freshman. Opportunities post
-            themselves. The intervention is the visibility — the rest is the program
-            doing what serious programs already do, finally seeing each other do it.
+            The directory grows the moment members start filling profiles. The
+            mentorship board works the moment one upperclassman offers to help one
+            freshman. Opportunities post themselves. The intervention is the visibility
+            — the rest is the program doing what serious programs already do, finally
+            seeing each other do it.
           </Paragraph>
         </Section>
 
         <Section roman="VI." title="What this asks of the directors">
           <Paragraph>
-            Mr. Berry — your support of three things would make this real:
+            Three forms of staff support would make this real:
           </Paragraph>
           <List>
             <ListItem>
-              <strong>The invite code lives in the band hall.</strong> You rotate it
-              when you want. Anyone in the program who wants in is in.
+              <strong>The invite code lives in the band hall.</strong> Directors and drum
+              majors rotate it on their own schedule. Every signup goes through an
+              approval queue staff can review.
             </ListItem>
             <ListItem>
               <strong>Five minutes at the first rehearsal of the season</strong> for the
               drum majors to introduce it.
             </ListItem>
             <ListItem>
-              <strong>Two co-conspirators with admin access</strong> — a section leader
-              and a junior — so the system outlasts any single drum major.
+              <strong>Two student co-administrators</strong> — a section leader and a
+              junior — so the system outlasts any single drum major and moderation has
+              redundancy.
             </ListItem>
           </List>
           <Paragraph>

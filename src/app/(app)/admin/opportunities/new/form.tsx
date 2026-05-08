@@ -16,7 +16,7 @@ export function NewOpportunityForm() {
   return (
     <form action={action} className="flex flex-col gap-4">
       <Field label="Title" htmlFor="title">
-        <Input id="title" name="title" required placeholder="e.g. SAYWE Spring Auditions" />
+        <Input id="title" name="title" required placeholder="e.g. Regional Honor Band — Spring Auditions" />
       </Field>
 
       <Field label="Type" htmlFor="opportunityType">

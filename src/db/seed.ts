@@ -120,11 +120,11 @@ async function main() {
     workingOn: "All-Region prep + drum major audition fundamentals.",
     profile: {
       bio:
-        "I built this for the Warriors. BAND has the rehearsal schedule. Woodshed is for the work everyone does between rehearsals — the hours, the lessons, the auditions, the camps. The thing other Pieper musicians never see.",
+        "Drum major candidate, flute. Want to spend my year here making serious effort visible across the program — and giving every section the same shot at building real depth.",
       mentorAvailable: true,
       mentorSkills: ["Marching fundamentals", "Audition prep", "Practice habits"],
-      outsideEnsembles: [{ name: "SAYWE — Flute", startYear: 2024 }],
-      privateLessons: [{ teacher: "TBD", focus: "Flute" }],
+      outsideEnsembles: [{ name: "Regional Wind Ensemble — Flute", startYear: 2024 }],
+      privateLessons: [{ teacher: "Private studio", focus: "Flute" }],
       achievements: [
         { title: "TMEA All-Region Band", year: 2025, detail: "Advanced to area" },
         { title: "Solo & Ensemble — Class I", year: 2025, detail: "Division 1" },
@@ -151,7 +151,7 @@ async function main() {
       mentorAvailable: true,
       mentorSkills: ["All-State audition prep", "Brass technique", "Mental game"],
       outsideEnsembles: [
-        { name: "SAYWE Symphonic Winds", startYear: 2023 },
+        { name: "Regional Honor Symphony", startYear: 2023 },
         { name: "Region 12 Honor Band", startYear: 2024 },
       ],
       privateLessons: [{ teacher: "Mr. Reyna", focus: "Classical trumpet" }],
@@ -180,8 +180,8 @@ async function main() {
       mentorAvailable: true,
       mentorSkills: ["Clarinet technique", "Audition prep", "Sight-reading", "Tone production"],
       outsideEnsembles: [
-        { name: "San Antonio Youth Symphony", startYear: 2023 },
-        { name: "SAYWE — Wind Symphony", startYear: 2024 },
+        { name: "Area Youth Symphony", startYear: 2023 },
+        { name: "Regional Wind Symposium", startYear: 2024 },
       ],
       privateLessons: [{ teacher: "Dr. Chavez", focus: "Classical clarinet" }],
       achievements: [
@@ -319,11 +319,11 @@ async function main() {
       },
       {
         id: newId(),
-        title: "SAYWE Spring Auditions",
+        title: "Regional Youth Wind Ensemble — Spring Auditions",
         description:
-          "San Antonio Youth Wind Ensembles spring audition cycle. Strong feeder for All-State and college prep — half our top auditioners are SAYWE members.",
+          "Spring audition cycle for the regional youth wind ensemble. Strong feeder for All-State prep and college audition tapes — many of the top auditioners in our area come through these programs.",
         opportunityType: "outside_audition",
-        link: "https://saywe.org",
+        link: "https://example.org/regional-youth-wind",
         deadlineDate: in21,
         sections: [
           "Flute","Clarinet","Saxophone","Double Reed","Trumpet","Horn","Trombone","Low Brass","Battery Percussion","Front Ensemble",
@@ -433,9 +433,8 @@ async function main() {
       { authorId: miaId, kind: "audition", title: "Auditioned for Trinity scholarship today.", body: "Mozart concerto first movement. Felt as ready as I'll ever be — we'll see. If anyone else is doing college auditions in the spring, let's start a Sunday lunch group.", daysAgo: 5 },
       { authorId: jalenId, kind: "camp", title: "Genesis DCI rookie camp last summer.", body: "I'm at Pieper because of the show, but I'm a serious musician because of those two days. If you're a brass or perc kid even thinking about DCI, the rookie camp is genuinely free — they want you there.", daysAgo: 30 },
       { authorId: avaId, kind: "honor", title: "First-time TMEA All-Region.", body: "Sophomore, mello, didn't expect to advance. Sat in lessons on Saturdays since freshman year. The 'maybe' kids should sign up for lessons. Worth it.", daysAgo: 18 },
-      { authorId: sofiaId, kind: "performance", title: "Heat Winter Guard regional silver.", body: "Spinning sabre since 8th grade. Guard side gets the same sweat tax as winds + brass — happy to mentor any guard freshman next year.", daysAgo: 9 },
-      { authorId: danielId, kind: "lesson", title: "Started lessons with Mr. Salinas this semester.", body: "I've been shedding alone since 9th grade and finally got over the cost concern. Two weeks in and I'm a different player. If you're brass and wondering whether it's worth it: yes.", daysAgo: 2 },
-      { authorId: haileyId, kind: "other", title: "I built this app for us.", body: "Not really a shoutout — more like a PSA. Use it. Post here. Fill in your profile. The whole point is so we can see each other.", daysAgo: 1 },
+      { authorId: sofiaId, kind: "performance", title: "Heat Winter Guard regional silver.", body: "Spinning sabre since 8th grade. Happy to mentor any guard freshman next year — DM through mentorship if interested.", daysAgo: 9 },
+      { authorId: danielId, kind: "lesson", title: "Started lessons with Mr. Salinas this semester.", body: "Been shedding alone since 9th grade and finally got over the cost concern. Two weeks in and I'm a different player. If you're brass and wondering whether it's worth it: yes.", daysAgo: 2 },
     ];
     for (const s of seedShoutouts) {
       const created = new Date();

@@ -137,7 +137,7 @@ export const MENTOR_SKILLS = [
   "Brass technique",
   "Percussion technique",
   "Color guard technique",
-  "SAYWE audition prep",
+  "Honor band audition prep",
   "All-Region audition prep",
   "All-State audition prep",
   "DCI audition prep",
