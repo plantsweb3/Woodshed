@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { APP } from "@/lib/constants";
 import { Button } from "@/components/ui/button";
-import { ArrowUpRight, ShieldCheck } from "lucide-react";
+import { ArrowUpRight, ShieldCheck, Eye } from "lucide-react";
+import { enterDemoMode } from "@/app/actions/demo";
 
 export default function LandingPage() {
   return (
@@ -31,7 +32,7 @@ export default function LandingPage() {
             <p className="max-w-xl font-editorial text-xl md:text-2xl leading-[1.25] text-foreground/90 reveal" style={{ animationDelay: "520ms" }}>
               Where the work happens. BAND has the rehearsal schedule — <span className="font-editorial-italic text-primary">this is for everything beyond it,</span> with leadership oversight built in.
             </p>
-            <div className="flex items-center gap-3 reveal" style={{ animationDelay: "620ms" }}>
+            <div className="flex items-center gap-3 flex-wrap reveal" style={{ animationDelay: "620ms" }}>
               <Link href="/signup">
                 <Button size="lg" className="gap-2 rounded-none border-0">
                   Enter <ArrowUpRight className="h-4 w-4" />
@@ -40,6 +41,15 @@ export default function LandingPage() {
               <Link href="/signin" className="underline underline-offset-4 text-sm hover:text-primary">
                 I have an account
               </Link>
+              <span className="text-muted-foreground hidden sm:inline">·</span>
+              <form action={enterDemoMode}>
+                <button
+                  type="submit"
+                  className="inline-flex items-center gap-1.5 underline underline-offset-4 text-sm hover:text-primary"
+                >
+                  <Eye className="h-3.5 w-3.5" /> Demo (read-only)
+                </button>
+              </form>
             </div>
           </div>
         </div>

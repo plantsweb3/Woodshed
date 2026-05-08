@@ -13,6 +13,7 @@ import { MENTOR_URGENCY } from "@/lib/constants";
 import { scan, zeroTolerance } from "@/lib/moderation";
 import { onMentorRequestCreated, onMentorRequestClaimed, onZeroToleranceReport } from "@/lib/events";
 import { awardMilestone } from "@/lib/milestones";
+import { isDemoUser, DEMO_BLOCKED } from "@/lib/demo";
 
 const MAX_OPEN_PER_USER = 5;
 
@@ -29,6 +30,7 @@ export interface MentorFormState {
 
 export async function createMentorRequest(_prev: MentorFormState, formData: FormData): Promise<MentorFormState> {
   const user = await requireApprovedUser();
+  if (isDemoUser(user)) return { error: DEMO_BLOCKED };
   const parsed = CreateSchema.safeParse({
     targetId: formData.get("targetId") || undefined,
     skill: formData.get("skill"),
@@ -112,6 +114,7 @@ export async function createMentorRequest(_prev: MentorFormState, formData: Form
 export async function claimMentorRequest(formData: FormData) {
   const user = await requireApprovedUser();
   if (user.status === "alumni") return; // Alumni can't claim
+  if (isDemoUser(user)) return;
   const id = z.string().min(1).parse(formData.get("id"));
 
   const [req] = await db.select().from(mentorRequests).where(eq(mentorRequests.id, id)).limit(1);
@@ -132,6 +135,7 @@ export async function claimMentorRequest(formData: FormData) {
 
 export async function closeMentorRequest(formData: FormData) {
   const user = await requireApprovedUser();
+  if (isDemoUser(user)) return;
   const id = z.string().min(1).parse(formData.get("id"));
   const [req] = await db.select().from(mentorRequests).where(eq(mentorRequests.id, id)).limit(1);
   if (!req) return;

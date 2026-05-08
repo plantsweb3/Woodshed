@@ -8,6 +8,7 @@ import { kudos, users, shoutouts } from "@/db/schema";
 import { requireApprovedUser } from "@/lib/session";
 import { newId } from "@/lib/ids";
 import { resolveMilestoneRecipient } from "@/lib/kudos";
+import { isDemoUser } from "@/lib/demo";
 
 const ToggleSchema = z.object({
   targetType: z.enum(["profile", "milestone", "shoutout"]),
@@ -37,6 +38,7 @@ async function getRecipient(
 
 export async function toggleKudos(input: { targetType: "profile" | "milestone" | "shoutout"; targetId: string }): Promise<KudosResult> {
   const actor = await requireApprovedUser();
+  if (isDemoUser(actor)) return { given: false, count: 0 };
   const parsed = ToggleSchema.parse(input);
 
   const recipient = await getRecipient(parsed.targetType, parsed.targetId);

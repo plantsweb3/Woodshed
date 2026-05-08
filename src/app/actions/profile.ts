@@ -7,6 +7,7 @@ import { db } from "@/db";
 import { profiles, users } from "@/db/schema";
 import { requireApprovedUser } from "@/lib/session";
 import { logAudit } from "@/lib/audit";
+import { isDemoUser, DEMO_BLOCKED } from "@/lib/demo";
 
 const EnsembleSchema = z.object({
   name: z.string().trim().min(1).max(80),
@@ -54,6 +55,7 @@ export interface ProfileFormState {
 
 export async function saveProfile(_prev: ProfileFormState, formData: FormData): Promise<ProfileFormState> {
   const user = await requireApprovedUser();
+  if (isDemoUser(user)) return { error: DEMO_BLOCKED };
   const raw = {
     bio: formData.get("bio") ?? "",
     mentorAvailable: formData.get("mentorAvailable") === "on",
@@ -114,6 +116,7 @@ const StatusSchema = z.object({
 
 export async function saveWorkingOn(formData: FormData) {
   const user = await requireApprovedUser();
+  if (isDemoUser(user)) return;
   const parsed = StatusSchema.safeParse({ workingOn: formData.get("workingOn") ?? "" });
   if (!parsed.success) return;
   await db.update(users).set({ workingOn: parsed.data.workingOn }).where(eq(users.id, user.id));

@@ -4,11 +4,14 @@ import { AppNav } from "@/components/nav";
 import { listNotifications, unreadCount } from "@/lib/notifications";
 import { TelemetryProvider } from "@/components/telemetry-provider";
 import { hashId } from "@/lib/telemetry";
+import { DemoBanner } from "@/components/demo-banner";
+import { isDemoUser } from "@/lib/demo";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const user = await requireApprovedOrAlumniNoOnboarding();
   if (user.status !== "approved" && user.status !== "alumni") redirect("/pending");
 
+  const demo = isDemoUser(user);
   const [items, unread] = await Promise.all([listNotifications(user.id, { limit: 20 }), unreadCount(user.id)]);
 
   const notifications = items.map((n) => ({
@@ -24,9 +27,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="min-h-dvh">
       <TelemetryProvider hashedUserId={hashId(user.id)} role={user.role} />
+      {demo && <DemoBanner />}
       <AppNav
         role={user.role}
-        name={`${user.firstName} ${user.lastName}`}
+        name={demo ? "Demo viewer" : `${user.firstName} ${user.lastName}`}
         notifications={notifications}
         unreadCount={unread}
       />

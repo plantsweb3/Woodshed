@@ -11,6 +11,7 @@ import { logAudit } from "@/lib/audit";
 import { scan, zeroTolerance } from "@/lib/moderation";
 import { insertReport } from "@/lib/reports";
 import { onZeroToleranceReport } from "@/lib/events";
+import { isDemoUser, DEMO_BLOCKED } from "@/lib/demo";
 
 const KINDS = ["summer_program", "audition", "lesson", "honor", "performance", "camp", "other"] as const;
 
@@ -27,6 +28,7 @@ export interface ShoutoutFormState {
 
 export async function postShoutout(_prev: ShoutoutFormState, formData: FormData): Promise<ShoutoutFormState> {
   const user = await requireApprovedUser();
+  if (isDemoUser(user)) return { error: DEMO_BLOCKED };
   const parsed = PostSchema.safeParse({
     kind: formData.get("kind") || "other",
     title: formData.get("title"),
@@ -83,6 +85,7 @@ export async function postShoutout(_prev: ShoutoutFormState, formData: FormData)
 
 export async function deleteShoutout(formData: FormData) {
   const user = await requireApprovedUser();
+  if (isDemoUser(user)) return;
   const id = z.string().min(1).parse(formData.get("id"));
   const [row] = await db.select().from(shoutouts).where(eq(shoutouts.id, id)).limit(1);
   if (!row) return;

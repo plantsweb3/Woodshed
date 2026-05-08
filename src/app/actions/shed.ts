@@ -12,6 +12,7 @@ import { PRACTICE_VISIBILITY } from "@/lib/constants";
 import { checkShedMilestones, checkStreakMilestones } from "@/lib/milestones";
 import { computeStreak } from "@/lib/sheds";
 import { captureServerEvent } from "@/lib/telemetry";
+import { isDemoUser, DEMO_BLOCKED } from "@/lib/demo";
 
 const ShedSchema = z.object({
   durationMinutes: z.coerce.number().int().min(1, "How long?").max(600, "600 minutes is the max per shed."),
@@ -32,6 +33,7 @@ export interface ShedFormState {
 
 export async function logShed(_prev: ShedFormState, formData: FormData): Promise<ShedFormState> {
   const user = await requireApprovedUser();
+  if (isDemoUser(user)) return { error: DEMO_BLOCKED };
   const parsed = ShedSchema.safeParse({
     durationMinutes: formData.get("durationMinutes"),
     workedOn: formData.get("workedOn"),
@@ -75,6 +77,7 @@ export async function logShed(_prev: ShedFormState, formData: FormData): Promise
 
 export async function deleteShed(formData: FormData) {
   const user = await requireApprovedUser();
+  if (isDemoUser(user)) return;
   const id = z.string().min(1).parse(formData.get("id"));
   await db.delete(practiceLogs).where(eq(practiceLogs.id, id));
   await logAudit({ actorUserId: user.id, action: "shed_delete", targetType: "practice_log", targetId: id });
