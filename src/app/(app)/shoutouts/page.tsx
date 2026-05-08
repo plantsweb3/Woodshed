@@ -8,6 +8,7 @@ import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { ReportButton } from "@/components/report-button";
 import { KudosButton } from "@/components/kudos-button";
+import { RichText } from "@/components/rich-text";
 import { ShoutoutForm } from "./form";
 import { summarize as summarizeKudos } from "@/lib/kudos";
 import { formatDate } from "@/lib/utils";
@@ -116,9 +117,16 @@ export default async function ShoutoutsPage() {
                       <Badge variant="primary">{KIND_LABEL[s.kind] ?? s.kind}</Badge>
                     </div>
 
-                    <p className="mt-3 font-display text-2xl leading-[1.05]">{s.title}</p>
+                    <RichText
+                      text={s.title}
+                      className="mt-3 font-display text-2xl leading-[1.05]"
+                      withEmbeds={false}
+                    />
                     {s.body && (
-                      <p className="mt-2 text-foreground/85 leading-relaxed whitespace-pre-line">{s.body}</p>
+                      <RichText
+                        text={s.body}
+                        className="mt-2 text-foreground/85 leading-relaxed whitespace-pre-line"
+                      />
                     )}
 
                     <div className="mt-4 flex items-center gap-2 flex-wrap">

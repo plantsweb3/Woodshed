@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { ReportButton } from "@/components/report-button";
+import { RichText } from "@/components/rich-text";
 import { claimMentorRequest, closeMentorRequest } from "@/app/actions/mentor";
 import { URGENCY_LABEL, type MentorUrgency } from "@/lib/constants";
 import { Lightbulb, X, ArrowRight } from "lucide-react";
@@ -65,7 +66,7 @@ export function MentorRequestCard({
           <Lightbulb className="h-4 w-4" />
           <span className="font-medium">{r.skill}</span>
         </div>
-        <p className="text-sm text-foreground/90 leading-relaxed whitespace-pre-line">{r.description}</p>
+        <RichText text={r.description} className="text-sm text-foreground/90 leading-relaxed whitespace-pre-line" />
       </div>
 
       <div className="flex items-center gap-2">

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar } from "@/components/ui/avatar";
 import { ReportButton } from "@/components/report-button";
 import { KudosButton } from "@/components/kudos-button";
+import { RichText } from "@/components/rich-text";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { countFor, hasGiven, summarize as summarizeKudos } from "@/lib/kudos";
 import { listForUser as listMilestones } from "@/lib/milestones";
@@ -156,10 +157,11 @@ export default async function MemberProfilePage({ params }: PageProps) {
             <p className="font-mono text-[10px] uppercase tracking-[0.24em] text-muted-foreground">I. In their words</p>
             <hr className="rule-letterpress mt-2 mb-3 w-12" />
           </aside>
-          <div>
-            <p className="max-w-2xl text-lg md:text-xl leading-[1.55] drop-cap whitespace-pre-line">
-              {profile.bio}
-            </p>
+          <div className="max-w-2xl">
+            <RichText
+              text={profile.bio}
+              className="text-lg md:text-xl leading-[1.55] drop-cap whitespace-pre-line"
+            />
           </div>
         </section>
       )}
