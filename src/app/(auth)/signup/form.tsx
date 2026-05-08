@@ -93,7 +93,7 @@ export function SignupForm() {
       </Field>
 
       <Field label="Invite code" htmlFor="inviteCode" hint="Posted in the band hall" error={fe.inviteCode}>
-        <Input id="inviteCode" name="inviteCode" required autoCapitalize="characters" />
+        <Input id="inviteCode" name="inviteCode" required autoCapitalize="characters" placeholder="e.g. WARRIORS-26" />
       </Field>
 
       <label className="flex items-start gap-2 text-sm text-muted-foreground">
