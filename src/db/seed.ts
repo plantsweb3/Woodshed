@@ -123,7 +123,7 @@ async function main() {
         "Drum major candidate, flute. Want to spend my year here making serious effort visible across the program — and giving every section the same shot at building real depth.",
       mentorAvailable: true,
       mentorSkills: ["Marching fundamentals", "Audition prep", "Practice habits"],
-      outsideEnsembles: [{ name: "Regional Wind Ensemble — Flute", startYear: 2024 }],
+      outsideEnsembles: [{ name: "SAYWE — Flute", startYear: 2024 }],
       privateLessons: [{ teacher: "Private studio", focus: "Flute" }],
       achievements: [
         { title: "TMEA All-Region Band", year: 2025, detail: "Advanced to area" },
@@ -151,7 +151,7 @@ async function main() {
       mentorAvailable: true,
       mentorSkills: ["All-State audition prep", "Brass technique", "Mental game"],
       outsideEnsembles: [
-        { name: "Regional Honor Symphony", startYear: 2023 },
+        { name: "SAYWE Symphonic Winds", startYear: 2023 },
         { name: "Region 12 Honor Band", startYear: 2024 },
       ],
       privateLessons: [{ teacher: "Mr. Reyna", focus: "Classical trumpet" }],
@@ -180,8 +180,8 @@ async function main() {
       mentorAvailable: true,
       mentorSkills: ["Clarinet technique", "Audition prep", "Sight-reading", "Tone production"],
       outsideEnsembles: [
-        { name: "Area Youth Symphony", startYear: 2023 },
-        { name: "Regional Wind Symposium", startYear: 2024 },
+        { name: "San Antonio Youth Symphony", startYear: 2023 },
+        { name: "SAYWE — Wind Symphony", startYear: 2024 },
       ],
       privateLessons: [{ teacher: "Dr. Chavez", focus: "Classical clarinet" }],
       achievements: [
@@ -319,11 +319,11 @@ async function main() {
       },
       {
         id: newId(),
-        title: "Regional Youth Wind Ensemble — Spring Auditions",
+        title: "SAYWE Spring Auditions",
         description:
-          "Spring audition cycle for the regional youth wind ensemble. Strong feeder for All-State prep and college audition tapes — many of the top auditioners in our area come through these programs.",
+          "San Antonio Youth Wind Ensembles spring audition cycle. Strong feeder for All-State and college prep — many of the top auditioners in the area come through SAYWE.",
         opportunityType: "outside_audition",
-        link: "https://example.org/regional-youth-wind",
+        link: "https://saywe.org",
         deadlineDate: in21,
         sections: [
           "Flute","Clarinet","Saxophone","Double Reed","Trumpet","Horn","Trombone","Low Brass","Battery Percussion","Front Ensemble",
